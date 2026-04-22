@@ -92,7 +92,7 @@ A git worktree is created via `superpowers:using-git-worktrees`. The spec is pro
 
 Each phase runs `build` → `coach` → gate. In `build`, the LLM scaffolds files, writes failing tests, and leaves `[PRACTICE]` steps in `plan.md` for you. In `coach`, you fill those steps; the LLM answers questions with concepts, bridges, and doc links — never code. The phase gate runs the test runner, confirms all TODOs done, asks one difficulty question, and advances. If two phases overrun the 90-minute target by >150%, remaining phases are re-planned smaller.
 
-The final phase is the capstone — `solo` mode. The LLM writes only a feature spec and one failing test stub; you write everything else. Capstone gate verifies user-authored commits on owned files. Then `review` mode emits `.learn/review.md` against a fixed rubric.
+The final phase is the **capstone** in `solo` mode. "Capstone" = the proof-of-learning phase: one real feature in the project, you write 100% of impl + tests, the LLM writes only a feature spec and one failing test stub. Capstone gate verifies commits on owned files are authored by your git identity. Then `review` mode runs **once, project-level**, and emits `.learn/review.md` against a fixed rubric. There is no per-phase review — only the gate above.
 
 ## Modes
 
@@ -115,7 +115,9 @@ Modes switch in two ways. You never name a mode directly — there is no "switch
 |---|---|---|
 | intake | `build` | spec + plan written, prereqs green |
 | `build` | `coach` | phase scaffolding done, TODOs emitted |
-| `coach` | `build` (next phase) | phase gate passes |
+| `coach` | `build` (next phase) | phase gate passes AND next phase is not capstone |
+| `coach` | (capstone prompt) | phase gate passes AND next phase is capstone — skill asks "ready for capstone?" |
+| (capstone prompt) | `solo` | you say yes |
 | `solo` | `review` | capstone gate passes |
 | `review` | DONE | review.md written |
 
@@ -124,11 +126,12 @@ Modes switch in two ways. You never name a mode directly — there is no "switch
 | You say (paraphrase) | Triggers |
 |---|---|
 | "done phase N" / "next phase" | Phase gate → advance on pass |
-| "ready for capstone" | `solo` (after confirmation) |
-| "capstone done" | Capstone gate → review |
+| "capstone done" | Capstone gate → auto-emit review.md → DONE (one step, not two) |
 | "give up on p1-t2" | One-shot: LLM writes that TODO, marks `gave_up`, returns to coach |
+| "give up on capstone" | Mark capstone not completed solo, still run review |
+| "pause" / "stop" / "exit skill" | Save state; resume later via `/ship-to-learn` |
 
-Any "just write it" / "switch to build" request in coach or solo is refused. If you genuinely want autocomplete, exit the skill and use a regular session.
+Any "just write it" / "switch to build" request in coach or solo is refused. If you genuinely want autocomplete, exit the skill explicitly first.
 
 ## Phase gate and review rubric
 
@@ -216,7 +219,7 @@ A 5-year Node/TS dev wants to learn Go by shipping a URL shortener in ~6h. Intak
 | Skill writes code in coach mode | Skill bug. Kill the session and report. |
 | `context7` tools not callable | Re-run the MCP install for your agent. Restart the agent. |
 | `progress.json` out of sync with `plan.md` | Delete `progress.json` and re-invoke `/ship-to-learn`. Spec and plan survive. |
-| Worktree created outside `~/dev/` | Verify `git config user.email` matches expected. |
+| Capstone review flags "non-user commits" | Check `git config user.email` in the worktree matches the identity recorded in `.learn/progress.json`. |
 
 ---
 
