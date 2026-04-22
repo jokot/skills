@@ -92,7 +92,7 @@ A git worktree is created via `superpowers:using-git-worktrees`. The spec is pro
 
 Each phase runs `build` → `coach` → gate. In `build`, the LLM scaffolds files, writes failing tests, and leaves `[PRACTICE]` steps in `plan.md` for you. In `coach`, you fill those steps; the LLM answers questions with concepts, bridges, and doc links — never code. The phase gate runs the test runner, confirms all TODOs done, asks one difficulty question, and advances. If two phases overrun the 90-minute target by >150%, remaining phases are re-planned smaller.
 
-The final phase is the **capstone** in `solo` mode. "Capstone" = the proof-of-learning phase: one real feature in the project, you write 100% of impl + tests, the LLM writes only a feature spec and one failing test stub. Capstone gate verifies commits on owned files are authored by your git identity. Then `review` mode runs **once, project-level**, and emits `.learn/review.md` against a fixed rubric. There is no per-phase review — only the gate above.
+The final phase is the **capstone** in `solo` mode. "Capstone" = the proof-of-learning phase: one real feature in the project, you write 100% of impl + tests, the LLM writes only a feature spec and one failing test stub. Capstone gate computes "your files" by git-diff against the commit SHA recorded at capstone start, then verifies every new commit on those files is authored by your git identity. Then `review` mode runs **once, project-level**, reads only user-authored regions (practice TODOs that weren't given up, plus capstone diffs), and emits `.learn/review.md` against a fixed rubric. There is no per-phase review — only the gate above.
 
 ## Modes
 
