@@ -192,7 +192,8 @@ Invariants:
     "feature": "GET /stats/:code hit counter",
     "start_commit": "<git SHA at solo entry, e.g. abc1234>",
     "turns_since_last_progress": 0,
-    "last_seen_commit": "<sha or null>"
+    "last_seen_commit": "<sha or null>",
+    "scaffold_commits": ["<sha of each LLM commit during solo, e.g. Task C.1 stub>"]
   },
   "events": [
     {"ts": "ISO-8601", "kind": "phase_start", "phase": 1},
@@ -333,6 +334,14 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
    - TODO `user_writes` progression across phases: see "TODO progression" below.
    - **Do not include any "Execution Handoff" section** (writing-plans convention). Ship-to-learn owns execution.
    - `progress.json.capstone.required = true` means a capstone phase will run after phase `total_phases` completes. Solo-entry logic handles its creation; initial plan.md ends at `## Phase <total_phases>:`.
+   - **Reserve a feature for capstone.** After drafting phases 1..`total_phases`, inspect `spec.md` scope. If every scope item is covered by the phases (nothing left for capstone), prompt the user: "Your scope is fully planned by phase `<total_phases>`. Capstone needs one additional small feature (~90 min, 1–3 behaviors). Propose one — examples for your project: `<2–3 suggestions derived from spec>`. I'll add it to spec.md's scope under `## Reserved for capstone` and keep it out of the regular phases." Append the user-approved feature to `spec.md` as a `## Reserved for capstone` section (allowed — still pre-lock). Do not lock progress.json until this reservation exists.
+   - **Plan.md footer.** End `plan.md` with a horizontal rule and note:
+
+     ```
+     ---
+
+     **Note:** After phase <total_phases> completes, ship-to-learn prompts for the **capstone phase** — one additional feature you ship solo (you write impl + tests, LLM coaches only). The reserved feature is recorded in `.learn/spec.md` under `## Reserved for capstone`. Designed in detail and appended here as `## Capstone` at solo entry.
+     ```
 
 6. **Toolchain check.** Verify the target-stack toolchain is installed by running the stack's version command via bash (e.g. `go version`, `cargo --version`, `python3 --version`, `node --version`). If the command fails, halt: print the failing command, tell the user to install the toolchain, and **do not proceed to build**. This must happen before any file scaffolding because phase 1 `build` runs the test runner using this toolchain.
 
@@ -638,7 +647,7 @@ On entering `solo`:
    After the user picks the path:
    - Create that single file with: stack-minimal preamble (package declaration, imports strictly needed for the test runner to parse it), one test function named after the top-level behavior, body = stack's unimplemented-test pattern from the build-mode marker table (e.g. Go: `t.Fatal("write this test — capstone feature in plan.md ## Capstone")`; Rust: `panic!(...)`; Python: `pytest.fail(...)`; JS: `throw new Error(...)`).
    - **No impl files, no other test files, no signature stubs, no hint comments, no TODO markers in any file other than this one stub.** Capstone is a strict subset of `user_writes: both` — stricter than regular-phase `both` mode — the user designs the full shape.
-   - Commit this as `scaffold(capstone, task C.1): failing stub at <path>` before handing over to the user.
+   - Commit this as `scaffold(capstone, task C.1): failing stub at <path>` before handing over to the user. Capture the commit SHA (`git rev-parse HEAD`) and append it to `progress.json.capstone.scaffold_commits`. Review will use this list to exclude LLM-authored regions from its idiom critique.
 5. Set `mode: solo`. Tell the user: "Capstone is live. Any new or changed file since commit `<start_commit>` counts as your work. Commit your progress with your git identity (`<progress.json.git_identity>`). Say 'capstone done' when ready for the gate."
 6. Refuse all code writes until review.
 
@@ -671,8 +680,8 @@ Actions, in order:
 Review covers **only user-authored regions**. Exclude LLM-authored code entirely (scaffolding, failing tests you wrote, give-up solutions).
 
 1. **Phase-practice regions:** for every TODO in `progress.json.phases[*].todos[*]` where `practice == true` AND `gave_up == false` AND `status == done`: read the TODO's target file region (`impl_file` for `user_writes: impl|both`, `test_file` for `user_writes: test|both`). Those are user-authored.
-2. **Capstone regions:** run `git diff <capstone.start_commit>..HEAD` and include every diff hunk whose commits are authored by `git_identity` (from authorship step of capstone gate).
-3. **Excluded explicitly:** any file region from a TODO with `gave_up == true` — that's LLM's code. Any file region unchanged since the beginning of the project. Any scaffolding you generated yourself.
+2. **Capstone regions:** run `git log --format="%H" <capstone.start_commit>..HEAD`, filter OUT every SHA listed in `progress.json.capstone.scaffold_commits`. For the remaining user commits, compute the per-commit diff and include those hunks.
+3. **Excluded explicitly:** any file region from a TODO with `gave_up == true` — that's LLM's code. Any region introduced by a SHA in `capstone.scaffold_commits` — also LLM's code. Any file region unchanged since the beginning of the project.
 
 ### Steps
 
