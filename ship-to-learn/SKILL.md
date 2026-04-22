@@ -327,12 +327,12 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
    - Header: `# <Feature> Implementation Plan`, `**Goal:**`, `**Architecture:**`, `**Tech Stack:**`.
    - `## File Structure` section listing every file the plan creates/modifies with a one-line responsibility.
    - Bite-sized tasks grouped per phase, 2–5 minutes each, TDD cycle (write failing test → run → impl → run → commit).
-   - Phase count = `ceil(time_budget_hours * 60 / phase_time_target_min)` where `phase_time_target_min` defaults to 90.
-   - If phase count > 10, warn the user. Offer either proceeding as-is or splitting into sub-projects (per `superpowers:brainstorming`'s scope-check convention). User chooses.
-   - Each non-capstone phase: 5 practice TODOs distributed **2 easy + 2 medium + 1 hard**. Mark each with the `[PRACTICE]` marker below.
+   - **Phase count = regular (non-capstone) phases only.** Formula: `total_phases = ceil(time_budget_hours * 60 / phase_time_target_min)` where `phase_time_target_min` defaults to 90. **The capstone is always an additional final phase on top**, not counted in `total_phases`. It is designed later at solo entry and appended to `plan.md` via the `## Capstone` amendment — do not include a capstone phase in this initial plan write.
+   - If `total_phases > 10`, warn the user. Offer either proceeding as-is or splitting into sub-projects (per `superpowers:brainstorming`'s scope-check convention). User chooses.
+   - Each phase written here: 5 practice TODOs distributed **2 easy + 2 medium + 1 hard**. Mark each with the `[PRACTICE]` marker below.
    - TODO `user_writes` progression across phases: see "TODO progression" below.
-   - Last phase is always capstone: user writes both tests and impl, LLM writes only the failing-test stub and feature spec.
    - **Do not include any "Execution Handoff" section** (writing-plans convention). Ship-to-learn owns execution.
+   - `progress.json.capstone.required = true` means a capstone phase will run after phase `total_phases` completes. Solo-entry logic handles its creation; initial plan.md ends at `## Phase <total_phases>:`.
 
 6. **Toolchain check.** Verify the target-stack toolchain is installed by running the stack's version command via bash (e.g. `go version`, `cargo --version`, `python3 --version`, `node --version`). If the command fails, halt: print the failing command, tell the user to install the toolchain, and **do not proceed to build**. This must happen before any file scaffolding because phase 1 `build` runs the test runner using this toolchain.
 
@@ -404,6 +404,11 @@ Run: `git add <files> && git commit -m "scaffold(phase 1): module X"`
 Run: `<test-runner>`
 Expected: FAIL with "unimplemented" panic.
 
+- [ ] **Step 2a: Commit (LLM) — `scaffold(phase 1, task 1.2): failing test for <func>`**
+
+Run: `git add <test-file> <impl-file> && git commit -m "scaffold(phase 1, task 1.2): failing test for <func>"`
+(This commit includes the failing test and the unimplemented-marker stub in the impl file. Author boundary before user work begins.)
+
 - [ ] **Step 3: Implement <func> [PRACTICE — p1-t1 | easy|bridge | user_writes=impl]**
 
   **Goal:** <one-sentence behavior>
@@ -419,7 +424,7 @@ Expected: FAIL with "unimplemented" panic.
 Run: `<test-runner>`
 Expected: PASS.
 
-- [ ] **Step 5: Commit (user)**
+- [ ] **Step 5: Commit (user) — `impl: <func>`**
 
 Run: `git add <files> && git commit -m "impl: <func>"`
 
@@ -626,7 +631,14 @@ On entering `solo`:
    - **Docs:** — 1–3 context7 URLs relevant to the feature's stack concepts.
 
    Ownership at the gate is computed from `git diff <start_commit>..HEAD`, not from TODO ids — so capstone needs no PRACTICE markers to work.
-4. Write exactly one failing test **stub** that names the top-level behavior. Use the stack's unimplemented-test pattern (e.g. Go: `t.Fatal("write this test — capstone feature in plan.md ## Capstone")`; Rust `panic!`; Python `pytest.fail`; JS `throw new Error`). Nothing else: **no impl signature stubs, no scaffolding files, no hint comments, no TODO markers in any other file.** Capstone is a strict subset of `user_writes: both` — stricter than regular-phase `both` mode — the user designs the full shape.
+4. Write exactly one failing test **stub** — but first, ask the user where it should live. Say:
+
+   > "Capstone needs one test file to hold the failing stub. Where should it live? (e.g. `internal/stats/stats_test.go`, `tests/test_stats.py`, `src/stats.test.ts`). I will create only that one file — package declaration and the stub — nothing else. You design everything else."
+
+   After the user picks the path:
+   - Create that single file with: stack-minimal preamble (package declaration, imports strictly needed for the test runner to parse it), one test function named after the top-level behavior, body = stack's unimplemented-test pattern from the build-mode marker table (e.g. Go: `t.Fatal("write this test — capstone feature in plan.md ## Capstone")`; Rust: `panic!(...)`; Python: `pytest.fail(...)`; JS: `throw new Error(...)`).
+   - **No impl files, no other test files, no signature stubs, no hint comments, no TODO markers in any file other than this one stub.** Capstone is a strict subset of `user_writes: both` — stricter than regular-phase `both` mode — the user designs the full shape.
+   - Commit this as `scaffold(capstone, task C.1): failing stub at <path>` before handing over to the user.
 5. Set `mode: solo`. Tell the user: "Capstone is live. Any new or changed file since commit `<start_commit>` counts as your work. Commit your progress with your git identity (`<progress.json.git_identity>`). Say 'capstone done' when ready for the gate."
 6. Refuse all code writes until review.
 
