@@ -1,6 +1,6 @@
 ---
 name: ship-to-learn
-description: Ship a real project in a new stack as a learning exercise, with the LLM as coach instead of autocomplete. Experienced developers learning a new language or framework. Use when the user says "ship-to-learn", "teach me X by building Y", "I want to learn <stack> by shipping", invokes /ship-to-learn, or asks to practice a new stack on a real project. Not for: tutorials, one-off snippets, refactors, code review.
+description: Ship a real project in a new stack as a learning exercise, with the LLM as coach instead of autocomplete. For experienced developers learning a new language or framework. Use when the user says "ship-to-learn", "teach me X by building Y", "I want to learn a new stack by shipping", invokes /ship-to-learn, or asks to practice a new stack on a real project. Not suitable for tutorials, one-off snippets, refactors, or code review.
 ---
 
 # Learn By Shipping
