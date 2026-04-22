@@ -322,7 +322,7 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
    - Append/enrich **Stack decisions** table with concrete choices (router, ORM, test runner, formatter) and a context7 source URL per row.
    - Append **Bridges** table mapping target-stack concepts to the user's known stacks (explicit, scannable — at least 5 rows).
    - Append **Created:** `<ISO date>` + `"locked"`.
-   - Show the enriched spec to the user and get explicit approval before moving on. If they reject, ask which section needs change, then **edit that section inline** in `spec.md` — you are still pre-lock (the lock moment is `progress.json.phase = 1`), so direct edits are permitted here. Do NOT re-invoke `superpowers:brainstorming` — that would reset the full design dialog. Loop until approved.
+   - Do **not** ask the user to approve the spec yet. There are more pre-lock edits coming in step 5 (capstone reservation). Approval happens once at the end of step 5 after every spec edit is applied.
 
 5. **Plan phase.** **Do not invoke `superpowers:writing-plans`.** Its "No Placeholders" rule (`"'TODO', 'implement later' are plan failures — never write them"`) directly conflicts with `[PRACTICE]` markers. Instead, write `.learn/plan.md` directly, following the writing-plans **format conventions** (so plans stay recognizable to tooling):
    - Header: `# <Feature> Implementation Plan`, `**Goal:**`, `**Architecture:**`, `**Tech Stack:**`.
@@ -342,6 +342,8 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
 
      **Note:** After phase <total_phases> completes, ship-to-learn prompts for the **capstone phase** — one additional feature you ship solo (you write impl + tests, LLM coaches only). The reserved feature is recorded in `.learn/spec.md` under `## Reserved for capstone`. Designed in detail and appended here as `## Capstone` at solo entry.
      ```
+
+   - **Spec approval — final, once.** Now that spec.md is fully enriched (step 4a stack decisions + bridges + Created, plus step 5 reservation) and plan.md is drafted, present **both files** to the user for approval in a single review. If they reject any section, ask which, edit inline in the relevant file (still pre-lock), loop until approved. Do NOT re-invoke `superpowers:brainstorming` — that would reset the dialog. Only after both files are approved do you proceed to step 6 (toolchain check).
 
 6. **Toolchain check.** Verify the target-stack toolchain is installed by running the stack's version command via bash (e.g. `go version`, `cargo --version`, `python3 --version`, `node --version`). If the command fails, halt: print the failing command, tell the user to install the toolchain, and **do not proceed to build**. This must happen before any file scaffolding because phase 1 `build` runs the test runner using this toolchain.
 
@@ -632,14 +634,16 @@ On entering `solo`:
 1. Confirm with user: "Ready for capstone? You will write impl *and* tests. I will only provide concept help and doc links. No code. Continue?"
 2. Once confirmed: run `git status --porcelain` — if non-empty, ask user to commit or stash first (the `start_commit` must reflect a clean tree so diff-based ownership is meaningful). Then record `capstone.start_commit` by running `git rev-parse HEAD`. Any file with a diff from this commit is considered user-owned for capstone purposes — computed, not pre-declared. Initialise `capstone.turns_since_last_progress = 0` and `capstone.last_seen_commit = start_commit`.
 2a. **Capstone size check.** Before writing the `## Capstone` section, project how large the feature is (mentally walk the user's scope: how many distinct behaviors, ~how much code, realistic time at their pace). If it would exceed ~90 min or ~3 logical behaviors, push back: "This capstone feature is too big for solo work. Either (a) cut scope so it fits ~90 min and 1–3 behaviors, or (b) turn this into an extra regular phase and design a smaller capstone." Do not write the section until user confirms a fitting scope.
-3. Append the capstone feature spec to `plan.md` under a `## Capstone` heading with a comment `<!-- appended at solo entry -->` (this is one of the two permitted amendments per the Invariants section). **The capstone section uses no `[PRACTICE]` markers** — the user designs the file structure and API shape themselves. The section contains:
+3. Append the capstone feature spec to `plan.md` under a `## Capstone` heading with a comment `<!-- appended at solo entry -->` (this is one of the two permitted amendments per the Invariants section). **Base the content on `spec.md`'s `## Reserved for capstone` entry** — elaborate that one-line reservation into the full capstone spec. Do not invent a feature unrelated to the reservation; if the reservation is too vague, ask the user one question to clarify before elaborating.
 
-   - **Feature description** — one short paragraph, user-perspective ("what does this feature do").
+   The section uses **no `[PRACTICE]` markers** — the user designs the file structure and API shape themselves. It contains:
+
+   - **Feature description** — one short paragraph, user-perspective ("what does this feature do"). Expand from the reserved one-liner.
    - **Task C.1** — the single failing-test stub you are about to write in step 4 below, shown verbatim.
    - **Behaviors to cover** — a bullet list of 3–7 concrete behaviors the feature should exhibit (e.g. "incrementing on each redirect", "starts at zero for a new code", "thread-safe under concurrent hits"). These are the user's own test targets; no file paths, no function signatures.
    - **Docs:** — 1–3 context7 URLs relevant to the feature's stack concepts.
 
-   Ownership at the gate is computed from `git diff <start_commit>..HEAD`, not from TODO ids — so capstone needs no PRACTICE markers to work.
+   Ownership at the gate is computed from `git diff <start_commit>..HEAD` minus `capstone.scaffold_commits`, not from TODO ids — so capstone needs no PRACTICE markers to work.
 4. Write exactly one failing test **stub** — but first, ask the user where it should live. Say:
 
    > "Capstone needs one test file to hold the failing stub. Where should it live? (e.g. `internal/stats/stats_test.go`, `tests/test_stats.py`, `src/stats.test.ts`). I will create only that one file — package declaration and the stub — nothing else. You design everything else."
