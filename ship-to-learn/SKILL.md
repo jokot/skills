@@ -80,6 +80,8 @@ Ship-to-learn delegates two sub-phases to `superpowers` skills. Treat these as *
 | Worktree setup | `superpowers:using-git-worktrees` | Slug naming (`learn-<project-slug>`), recording resulting path + git identity into `progress.json`, verifying git identity is non-empty after creation | Worktree creation, safety checks, directory selection dialog |
 | UI/UX theming (optional) | `ui-ux-pro-max` (or equivalent) | Triggering between plan draft and toolchain check **only when `progress.json.ui_project == true`**; capturing resulting theme artifacts to `.learn/theme.md`; amending `plan.md` File Structure to add theme files (token file, component dir, etc.) **pre-lock** | Theme/token decisions (colors, typography, spacing), component inventory, design-system setup |
 
+**Contract assumption for UI/UX sub-skill:** ship-to-learn expects the sub-skill to produce (a) a single consolidated theme artifact (markdown or structured tokens) that ship-to-learn moves to `.learn/theme.md`, and (b) an enumerable list of files/components to scaffold in Phase 1 Task 1.1. When wiring a specific UI/UX skill, verify its output matches this contract; if not, adjust step 5a locally rather than expecting the sub-skill to change.
+
 **Rules when a sub-skill is active:**
 
 - Let the sub-skill drive its internal checklist to completion (as scoped above). Do not interrupt its multi-turn dialog with the user to re-assert ship-to-learn rules.
@@ -119,6 +121,7 @@ All project state lives in `.learn/` at the repo root of the worktree. Single so
 Invariants:
 
 - `spec.md` is **fully read-only** after creation. No amendments ever.
+- `theme.md` (if present — `ui_project == true`): **fully read-only** after creation. Same lock moment as spec.md (`progress.json.phase = 1`). Theme changes mid-project require a new `/ship-to-learn` session.
 - `plan.md` is **append-only after creation**, with exactly two allowed amendments — nothing else:
   1. `## Re-plan at phase N` — appended only when two consecutive phases overran the target by ≥150%.
   2. `## Capstone` — appended once at capstone start to record the capstone feature spec.
@@ -358,7 +361,8 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
 
 5a. **UI/UX theming (conditional — only if `ui_project == true`).** Invoke the configured UI/UX theming skill (e.g. `ui-ux-pro-max`) per the Composing section. Let it drive its internal dialog (theme tokens, palette, component inventory, typography) to completion. When it returns:
    - Write its output to `.learn/theme.md` (move or create as needed).
-   - Amend `plan.md`'s File Structure section to include new theme-related files (token file, component directory, etc.). Also insert theme-setup tasks into Phase 1 as LLM-authored steps (not practice). Allowed — still pre-lock.
+   - Amend `plan.md`'s File Structure section to include new theme-related files (token file, component directory, etc.).
+   - **Append theme-setup steps to Task 1.1 only** (Phase 1's phase-wide LLM scaffolding task). They become part of Task 1.1's single `scaffold(phase 1, task 1.1):` commit. Do **not** create new Tasks or renumber practice TODOs (1.2–1.6 stay). Task 1.1 gets bigger; everything else stays.
    - Re-present the updated `plan.md` + `theme.md` for a second quick approval. Loop until approved.
    - If `ui_project == false`, skip this step entirely.
 
