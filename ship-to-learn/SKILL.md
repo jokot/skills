@@ -85,7 +85,13 @@ Ship-to-learn delegates two sub-phases to `superpowers` skills. Treat these as *
 **Rules when a sub-skill is active:**
 
 - Let the sub-skill drive its internal checklist to completion (as scoped above). Do not interrupt its multi-turn dialog with the user to re-assert ship-to-learn rules.
-- When invoking `brainstorming`, inject this instruction at the start: *"Run steps 1 through 8 of your checklist. After step 8 (user reviews the written spec), stop and return control — do not invoke writing-plans. The parent skill (ship-to-learn) owns plan generation."*
+- **Universal invocation preamble — inject this at the start of every sub-skill invocation, in addition to any sub-skill-specific instruction:**
+
+  > "Produce your deliverable and return control to ship-to-learn when complete. Do NOT invoke `superpowers:writing-plans`, `superpowers:executing-plans`, `superpowers:subagent-driven-development`, or any other skill as a handoff. Ship-to-learn owns all onward execution."
+
+  Applies to `brainstorming`, `using-git-worktrees`, `ui-ux-pro-max`, and any future sub-skill added to the Composing table.
+
+- When invoking `brainstorming`, **also** inject: *"Run steps 1 through 8 of your checklist. After step 8 (user reviews the written spec), stop and return control — do not invoke writing-plans. The parent skill (ship-to-learn) owns plan generation."*
 - Once the sub-skill's deliverable is produced (spec.md, worktree path), resume ship-to-learn control: read the deliverable, post-process if needed (e.g. add bridges table to spec.md, move file to `.learn/`), then update `progress.json`.
 - **Sub-skill failure handling:** if a sub-skill aborts, refuses, or errors (e.g. `using-git-worktrees` refuses due to dirty tree, `brainstorming` user-bails mid-dialog), halt ship-to-learn, print the sub-skill's reason verbatim, ask the user to resolve, retry the same sub-phase. Do not skip to the next phase.
 - **Never** invoke `superpowers:writing-plans`, `superpowers:executing-plans`, or `superpowers:subagent-driven-development`. These conflict with `[PRACTICE]` marker semantics and aggressive-code-writing restrictions. Ship-to-learn owns plan generation and execution.
