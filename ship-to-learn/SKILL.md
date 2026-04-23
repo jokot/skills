@@ -32,6 +32,7 @@ Before doing anything else, verify all of these. If any **hard** prereq is missi
 | Hard | `superpowers` skills (`brainstorming`, `using-git-worktrees`) | `npx skills@latest add obra/superpowers` |
 | Hard | `context7` skills (`find-docs`) | `npx skills@latest add upstash/context7` |
 | Hard | `context7` MCP server | See MCP install table below |
+| Hard-conditional | `ui-ux-pro-max` skill (or any UI/UX theming skill) | Only required if pre-intake Q0 (UI-heavy project) = yes. If missing at that moment: halt, print `npx skills@latest add <ui-ux-pro-max-repo>`, ask user to install + restart agent, then re-run `/ship-to-learn`. |
 | Runtime | target-stack toolchain (e.g. `go`, `cargo`, `python3`, `node`) | Halt before transitioning to `build`; instruct user to install |
 
 ### Detecting prereqs per agent
@@ -77,6 +78,7 @@ Ship-to-learn delegates two sub-phases to `superpowers` skills. Treat these as *
 |---|---|---|---|
 | Spec creation | `superpowers:brainstorming` | Injecting required sections (user profile, bridges, stack decisions with context7 cites), locking path to `.learn/spec.md`, **stopping brainstorming after its step 8 (user reviews spec) — do NOT let it proceed to its step 9 (invoke writing-plans)** | Steps 1–8 of its internal checklist: intake dialog, design approval loop, spec write, self-review |
 | Worktree setup | `superpowers:using-git-worktrees` | Slug naming (`learn-<project-slug>`), recording resulting path + git identity into `progress.json`, verifying git identity is non-empty after creation | Worktree creation, safety checks, directory selection dialog |
+| UI/UX theming (optional) | `ui-ux-pro-max` (or equivalent) | Triggering between plan draft and toolchain check **only when `progress.json.ui_project == true`**; capturing resulting theme artifacts to `.learn/theme.md`; amending `plan.md` File Structure to add theme files (token file, component dir, etc.) **pre-lock** | Theme/token decisions (colors, typography, spacing), component inventory, design-system setup |
 
 **Rules when a sub-skill is active:**
 
@@ -110,6 +112,7 @@ All project state lives in `.learn/` at the repo root of the worktree. Single so
   progress.json        # live — you update it on every state change
   notes/
     phase-<N>-<project-slug>.md  # append-only coach notes (one file per phase, uses progress.json.slug)
+  theme.md             # optional — present only when ui_project == true; written by ui-ux-pro-max at step 5a, locked at same moment as spec.md/plan.md
   review.md            # written once at capstone completion
 ```
 
@@ -144,6 +147,7 @@ Invariants:
   },
   "time_budget_hours": 6,
   "phase_time_target_min": 90,
+  "ui_project": false,
   "projected_phases": 4,
   "phase": 2,
   "total_phases": 4,
@@ -297,7 +301,14 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
 
    **(iii) File missing or malformed JSON** — see Interaction contract rule 1 for malformed case. If missing but `.learn/` exists with `spec.md` or `plan.md` present (partial state), halt: "Partial `.learn/` state: spec or plan present without progress.json. Resolve: `rm -rf .learn/` to start fresh, or rebuild progress.json manually from spec/plan. I will not overwrite ambiguously." Only proceed to intake if `.learn/` is absent or empty.
 
-2. **If no `progress.json`**, start intake. Ask these questions one at a time. Keep each answer short.
+2. **If no `progress.json`**, start intake.
+
+   **Q0 — UI project check (asked first, separate turn):** "Is this a UI/frontend project (web app, dashboard, design system, any project with a significant visual layer)? y/n."
+
+   - If **yes**, verify the `ui-ux-pro-max` skill (or whichever UI/UX theming skill is configured) is installed. If missing, halt: print the install command (`npx skills@latest add <ui-ux-pro-max-repo>`), tell the user to install + restart the agent session + re-run `/ship-to-learn`. Do not proceed. Record the answer in-memory until `progress.json` is created (step 7) where it persists as `ui_project: true`.
+   - If **no**, skip the UI/UX skill check. Record `ui_project: false`.
+
+   **Then ask these questions one at a time.** Keep each answer short.
    - Known stacks and years of experience
    - Target stack and version
    - Idea? (yes / no / unsure — if no, use `superpowers:brainstorming` to help; if unsure, propose 3 sized-for-learning project ideas matched to their stack)
@@ -343,7 +354,13 @@ First action on `/ship-to-learn` invocation (or any trigger phrase for starting 
      **Note:** After phase <total_phases> completes, ship-to-learn prompts for the **capstone phase** — one additional feature you ship solo (you write impl + tests, LLM coaches only). The reserved feature is recorded in `.learn/spec.md` under `## Reserved for capstone`. Designed in detail and appended here as `## Capstone` at solo entry.
      ```
 
-   - **Spec approval — final, once.** Now that spec.md is fully enriched (step 4a stack decisions + bridges + Created, plus step 5 reservation) and plan.md is drafted, present **both files** to the user for approval in a single review. If they reject any section, ask which, edit inline in the relevant file (still pre-lock), loop until approved. Do NOT re-invoke `superpowers:brainstorming` — that would reset the dialog. Only after both files are approved do you proceed to step 6 (toolchain check).
+   - **Spec approval — final, once.** Now that spec.md is fully enriched (step 4a stack decisions + bridges + Created, plus step 5 reservation) and plan.md is drafted, present **both files** to the user for approval in a single review. If they reject any section, ask which, edit inline in the relevant file (still pre-lock), loop until approved. Do NOT re-invoke `superpowers:brainstorming` — that would reset the dialog. Only after both files are approved do you proceed to step 5a.
+
+5a. **UI/UX theming (conditional — only if `ui_project == true`).** Invoke the configured UI/UX theming skill (e.g. `ui-ux-pro-max`) per the Composing section. Let it drive its internal dialog (theme tokens, palette, component inventory, typography) to completion. When it returns:
+   - Write its output to `.learn/theme.md` (move or create as needed).
+   - Amend `plan.md`'s File Structure section to include new theme-related files (token file, component directory, etc.). Also insert theme-setup tasks into Phase 1 as LLM-authored steps (not practice). Allowed — still pre-lock.
+   - Re-present the updated `plan.md` + `theme.md` for a second quick approval. Loop until approved.
+   - If `ui_project == false`, skip this step entirely.
 
 6. **Toolchain check.** Verify the target-stack toolchain is installed by running the stack's version command via bash (e.g. `go version`, `cargo --version`, `python3 --version`, `node --version`). If the command fails, halt: print the failing command, tell the user to install the toolchain, and **do not proceed to build**. This must happen before any file scaffolding because phase 1 `build` runs the test runner using this toolchain.
 
