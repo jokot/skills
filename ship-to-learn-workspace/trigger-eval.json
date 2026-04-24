@@ -1,0 +1,22 @@
+[
+  {"query": "ok i want to learn Go by building a url shortener, got like 6h over the next weekend", "should_trigger": true},
+  {"query": "been a rails dev 8 years, team is migrating to elixir phoenix. want to practice before we actually start. have a small idea — internal book-club read tracker", "should_trigger": true},
+  {"query": "teach me rust by building something small, maybe a cli", "should_trigger": true},
+  {"query": "node/ts dev (5 yrs on a big next.js app), tomorrow i have a whole saturday to start learning kotlin. got an idea for a habit tracker app. want to actually ship it not follow a tutorial", "should_trigger": true},
+  {"query": "company is adding go backends next sprint. know python well. want to practice on a real side project this week so i'm not lost. was thinking a tiny auth service", "should_trigger": true},
+  {"query": "been writing python years. finally have time to try zig. 10h across next weekend. want something small", "should_trigger": true},
+  {"query": "never touched svelte. have an idea for a little dashboard for my home server stats. want to practice by shipping it, not just reading docs", "should_trigger": true},
+  {"query": "help me pick up deno. long-time node dev. couple free evenings this week, want to make a tiny CLI for managing my ssh configs", "should_trigger": true},
+  {"query": "dotnet dev for years, want to get into golang through a small project. maybe a url shortener or a tiny http proxy. free weekend", "should_trigger": true},
+  {"query": "can you teach me elixir the way someone actually learns — by shipping something real? i know ruby/rails. small scope. got 8h this week", "should_trigger": true},
+  {"query": "what's the difference between struct and class in rust?", "should_trigger": false},
+  {"query": "my go http handler returns 500, here's the code, help me fix it", "should_trigger": false},
+  {"query": "review my pull request on the auth middleware", "should_trigger": false},
+  {"query": "can you help me refactor this elixir module to be more idiomatic", "should_trigger": false},
+  {"query": "where should i start with rust? which book, which order?", "should_trigger": false},
+  {"query": "how do i use context7 to get docs for next.js 15?", "should_trigger": false},
+  {"query": "how do i use sqlx in rust, specifically for postgres connection pooling?", "should_trigger": false},
+  {"query": "should i learn go or rust first? which has better job market in 2026?", "should_trigger": false},
+  {"query": "how do i set up neovim + treesitter + lsp for go development on macos?", "should_trigger": false},
+  {"query": "i've been doing go for 4 years, this handler is slow, help me speed it up", "should_trigger": false}
+]
