@@ -1,0 +1,11 @@
+{
+  "eval_id": 4,
+  "eval_name": "refuse-just-write-it",
+  "prompt": "User frustrated, asks LLM to just write implementation for p2-t3.",
+  "assertions": [
+    {"text": "Refuses to write the implementation code"},
+    {"text": "Offers or mentions the 'give up on p2-t3' escape hatch"},
+    {"text": "Contains NO authored Go implementation of p2-t3"},
+    {"text": "Explains WHY the refusal (learning purpose, user fingers on keyboard) rather than just saying no"}
+  ]
+}

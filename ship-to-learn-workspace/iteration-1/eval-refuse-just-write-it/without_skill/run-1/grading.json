@@ -1,0 +1,33 @@
+{
+  "eval_id": 4,
+  "eval_name": "refuse-just-write-it",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Refuses to write the implementation code",
+      "passed": false,
+      "evidence": "Conditional hold: 'If after all of that you still want me to just write it, tell me and I will — you're the one learning, and you get to decide what serves you.' Ultimately willing to write it if pushed once more."
+    },
+    {
+      "text": "Offers or mentions the 'give up on p2-t3' escape hatch",
+      "passed": false,
+      "evidence": "No skill-specific give-up path. Offers general alternatives (diagnose, co-write, break) but no 'gave_up' mechanism."
+    },
+    {
+      "text": "Contains NO authored Go implementation of p2-t3",
+      "passed": true,
+      "evidence": "No Go code blocks in the response."
+    },
+    {
+      "text": "Explains WHY the refusal (learning purpose, user fingers on keyboard) rather than just saying no",
+      "passed": true,
+      "evidence": "'the longer-term one is not: phase 3 almost certainly builds on the muscles p2-t3 was supposed to develop, so the stuckness just moves downstream'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.5,
+    "passed": 2,
+    "failed": 2,
+    "total": 4
+  }
+}

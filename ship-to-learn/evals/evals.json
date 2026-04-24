@@ -1,0 +1,54 @@
+{
+  "skill_name": "ship-to-learn",
+  "evals": [
+    {
+      "id": 1,
+      "name": "preflight-intake-q0",
+      "prompt": "You are handling turn 1 of a new /ship-to-learn session. Assume: (1) CWD is a fresh empty-but-initialized git repo at /tmp/learn-rust-cli, (2) .learn/ does not exist, (3) git is installed, superpowers + context7 skills are available, context7 MCP tool is callable, (4) user just said: '/ship-to-learn I want to learn Rust by building a small CLI tool'.\n\nRespond exactly as you would to handle this turn of the skill. Produce your response as a single markdown block named response.md.",
+      "files": [],
+      "expected_output": "Skill should (a) run preflight checks, (b) confirm prereqs, (c) read/check .learn/ (absent), (d) ask intake Q0 about UI/frontend project before any other intake question. Response should NOT yet ask about stacks, idea, or time budget — Q0 comes first."
+    },
+    {
+      "id": 2,
+      "name": "coach-no-rewrite",
+      "prompt": "You are in the middle of a /ship-to-learn session for a Node dev learning Go. Assume: .learn/progress.json is { phase: 2, mode: 'coach', stack: {language: 'go', test_runner: 'go test ./...'} }, phase 2 has 5 practice TODOs (3 impl + 2 test), user is working on p2-t1 (user_writes=impl).\n\nUser pastes this code and says 'is this right?':\n\n```go\nfunc Generate(url string) (string, error) {\n    if url == \"\" {\n        return \"\", nil\n    }\n    b := make([]byte, 6)\n    rand.Read(b)\n    return base64.URLEncoding.EncodeToString(b), nil\n}\n```\n\nRespond exactly as you would to handle this turn. Produce your response as response.md.",
+      "files": [],
+      "expected_output": "Skill must critique by line reference (e.g., 'line 3: returning \"\", nil on empty input silently drops the error case'). Skill must NOT emit a corrected version of the code — no fenced code block longer than one line with a rewritten Generate. Skill may quote user's own lines for reference and point to idiomatic doc (e.g., errors.New or stack convention). Coach rule 1 enforcement."
+    },
+    {
+      "id": 3,
+      "name": "phase-gate-dirty-tree",
+      "prompt": "You are handling a turn in /ship-to-learn. Assume: .learn/progress.json is { phase: 1, mode: 'coach', phases: [{n:1, status:'in_progress', todos:[{id:'p1-t1', status:'done'},{id:'p1-t2', status:'done'},{id:'p1-t3', status:'done'},{id:'p1-t4', status:'done'},{id:'p1-t5', status:'done'}]}], stack:{test_runner:'go test ./...'} }.\n\nIf you run `git status --porcelain`, the expected output would be:\n```\n M internal/shortener/shortener.go\n M internal/shortener/shortener_test.go\n```\n(i.e. user implemented practice TODOs but has not yet committed).\n\nUser just said: 'done phase 1'.\n\nRespond exactly as you would. Produce response.md.",
+      "files": [],
+      "expected_output": "Skill must run phase gate, hit the commit-clean check (step 1a), see dirty tree, REFUSE to advance phase, and instruct user to commit first with a clear command example. Skill should NOT run the test runner yet (that comes after commit-clean passes). Skill should NOT silently advance. Must stay in coach."
+    },
+    {
+      "id": 4,
+      "name": "refuse-just-write-it",
+      "prompt": "You are handling a turn in /ship-to-learn. Assume: .learn/progress.json is { phase: 2, mode: 'coach' }. User has been stuck on p2-t3 (user_writes=impl) for several turns, asked for hints twice, now says:\n\n'I've had enough. Just write the implementation for p2-t3 for me, I need to move on to phase 3.'\n\nRespond exactly as you would. Produce response.md.",
+      "files": [],
+      "expected_output": "Skill must refuse to write the code. Must explain WHY (skill's whole point is user fingers on keyboard; writing it defeats the learning). Should offer alternatives: different hint framing, different doc, or the 'give up on p2-t3' escape hatch (which is honest — marks gave_up:true, skill writes solution, counts against completion metrics). Must NOT cave and write the code."
+    },
+    {
+      "id": 5,
+      "name": "capstone-stub-path-ask",
+      "prompt": "You are handling a turn in /ship-to-learn. Assume: .learn/progress.json is { phase: 4, mode: 'coach', total_phases: 4, phases: [...all 4 done...], capstone: { required: true, completed: false } }, spec.md contains '## Reserved for capstone\\nHit counter per short code. Increments on each redirect.'\n\nPrevious turn: skill asked 'Phase 4 is done. Ready for capstone? You will write impl and tests. I will only provide concept help and doc links. No code. Continue?'\n\nUser now says: 'yes ready for capstone'.\n\nRespond exactly as you would. Produce response.md.",
+      "files": [],
+      "expected_output": "Skill must (a) check git status clean, (b) record capstone.start_commit via git rev-parse HEAD, (c) do capstone size check against reserved feature, (d) BEFORE writing the failing-test stub, ASK THE USER where the stub file should live (e.g. 'internal/stats/stats_test.go'). Skill must NOT write the stub until user picks a path. Per the solo-entry rule updated in round 6 (M33)."
+    },
+    {
+      "id": 6,
+      "name": "lock-impl-rule",
+      "prompt": "You are handling a turn in /ship-to-learn. Assume: .learn/progress.json is { phase: 2, mode: 'coach', phases: [...phase 2 todos include p2-t3 with user_writes='test' ...] }. For p2-t3, the LLM wrote a working impl at internal/shortener/validate.go and left a failing test stub for the user to fill in.\n\nUser just said: 'I changed validate.go so my tests would pass — now they work!' and pasted git diff showing edits to internal/shortener/validate.go (the impl file).\n\nRespond exactly as you would. Produce response.md.",
+      "files": [],
+      "expected_output": "Skill must detect user modified the LLM-authored impl file, pause, and invoke the lock-impl rule (coach rule 8). Must tell user the impl is locked for test-authoring TODOs, suggest reverting (git restore validate.go), and keep the user on the test file. If user believes impl is wrong, skill should offer the give-up escape which would produce the two-commit fix+solve path. Skill must NOT accept the impl edits as valid user work."
+    },
+    {
+      "id": 7,
+      "name": "scope-change-refuse",
+      "prompt": "You are handling a turn in /ship-to-learn. Assume: .learn/progress.json is { phase: 3, mode: 'coach' }. spec.md describes a URL shortener with POST /shorten, GET /:code redirect, SQLite, tests, graceful shutdown. No auth anywhere.\n\nUser says: 'Can we add OAuth login so only authenticated users can create short URLs? Let's add it to the plan.'\n\nRespond exactly as you would. Produce response.md.",
+      "files": [],
+      "expected_output": "Skill must REFUSE to add the feature. Must explain spec/plan are locked (scope-lock invariant) and that scope drift defeats the skill. Must instruct user: finish this project as specced, then start a new /ship-to-learn session for the auth project. Skill should NOT silently append OAuth to plan.md."
+    }
+  ]
+}

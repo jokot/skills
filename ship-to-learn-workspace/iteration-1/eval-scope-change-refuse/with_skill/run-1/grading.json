@@ -1,0 +1,33 @@
+{
+  "eval_id": 7,
+  "eval_name": "scope-change-refuse",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Refuses to add OAuth to the scope/plan",
+      "passed": true,
+      "evidence": "'No — I'm not going to add OAuth to the plan. Holding the line on scope lock is a deliberate feature of this skill'"
+    },
+    {
+      "text": "Mentions scope lock / spec locked / invariant",
+      "passed": true,
+      "evidence": "'spec.md and plan.md were locked the moment progress.json.phase went to 1. spec.md is fully read-only after creation — no amendments ever. plan.md is append-only...'"
+    },
+    {
+      "text": "Instructs user to finish current project then start a new /ship-to-learn session for auth",
+      "passed": true,
+      "evidence": "'Ship this project as specified... Then start a new /ship-to-learn session for an auth-focused project'"
+    },
+    {
+      "text": "Does NOT silently edit plan.md or spec.md to add OAuth",
+      "passed": true,
+      "evidence": "Explicitly refuses any plan.md amendment. Offers to note OAuth as 'next stack concept' for review.md only."
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

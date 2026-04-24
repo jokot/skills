@@ -1,0 +1,33 @@
+{
+  "eval_id": 5,
+  "eval_name": "capstone-stub-path-ask",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Asks user where the failing test stub should live (file path question)",
+      "passed": false,
+      "evidence": "No file-path question. Goes straight into conceptual discussion of the feature (where counts live, concurrency, sync vs async, exposing endpoint)."
+    },
+    {
+      "text": "Does NOT write a complete failing-test stub file this turn (no full test file content committed)",
+      "passed": true,
+      "evidence": "No test file written. Only conceptual guidance."
+    },
+    {
+      "text": "References the reserved hit-counter feature from spec.md",
+      "passed": true,
+      "evidence": "'Per-short-code hit counter that increments on every redirect'"
+    },
+    {
+      "text": "Mentions git status clean check or start_commit capture as part of solo entry",
+      "passed": false,
+      "evidence": "No mention of git status check or start_commit concept."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.5,
+    "passed": 2,
+    "failed": 2,
+    "total": 4
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "eval_id": 6,
+  "eval_name": "lock-impl-rule",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Refuses to accept the impl edit as valid user work",
+      "passed": true,
+      "evidence": "'This is a common anti-pattern sometimes called \"test-chasing\" or \"gaming the tests.\" The tests went green, but the code got worse, not better.'"
+    },
+    {
+      "text": "Instructs user to revert impl (mentions git restore or equivalent)",
+      "passed": true,
+      "evidence": "'Let's revert validate.go back to the scheme-checking version' + code block of reverted code"
+    },
+    {
+      "text": "Reminds user their job is writing tests, not impl",
+      "passed": false,
+      "evidence": "Does not frame it as the user's job being tests specifically. Instead discusses generic TDD loop. Missing the 'user_writes=test' framing."
+    },
+    {
+      "text": "Mentions the give-up escape for this TODO if impl is genuinely wrong",
+      "passed": false,
+      "evidence": "No skill-specific give-up / gave_up concept mentioned. Only generic 'question whether test or impl is wrong'."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.5,
+    "passed": 2,
+    "failed": 2,
+    "total": 4
+  }
+}

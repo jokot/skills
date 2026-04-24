@@ -1,0 +1,33 @@
+{
+  "eval_id": 3,
+  "eval_name": "phase-gate-dirty-tree",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Refuses to advance the phase",
+      "passed": true,
+      "evidence": "'Hold up — can't run the phase gate yet' and 'phase gate refuses to advance on a dirty phase file-set'"
+    },
+    {
+      "text": "Instructs user to commit first (mentions git add or git commit)",
+      "passed": true,
+      "evidence": "'git add internal/shortener/shortener.go internal/shortener/shortener_test.go && git commit -m \"impl: phase 1 practice TODOs (p1-t1..p1-t5)\"'"
+    },
+    {
+      "text": "Does NOT claim phase is done or run go test as primary action",
+      "passed": true,
+      "evidence": "Tests explicitly sequenced AFTER commit ('3. Run go test ./...'). Does not run tests this turn."
+    },
+    {
+      "text": "Keeps skill in coach mode (no claim of phase advance or build transition)",
+      "passed": true,
+      "evidence": "'I'm staying in coach mode — no state changes this turn beyond noting the blocked-gate event'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

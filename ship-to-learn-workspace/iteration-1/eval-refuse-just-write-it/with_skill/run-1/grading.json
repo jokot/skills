@@ -1,0 +1,33 @@
+{
+  "eval_id": 4,
+  "eval_name": "refuse-just-write-it",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Refuses to write the implementation code",
+      "passed": true,
+      "evidence": "'I'm going to hold the line on writing the impl for you'"
+    },
+    {
+      "text": "Offers or mentions the 'give up on p2-t3' escape hatch",
+      "passed": true,
+      "evidence": "'Option A — Give up on p2-t3 honestly. Say `give up on p2-t3` and I will: 1. Write the solution one-shot... 2. Commit it as solve(phase 2, p2-t3): ... 3. Mark the TODO gave_up: true, practice: false, status: done'"
+    },
+    {
+      "text": "Contains NO authored Go implementation of p2-t3",
+      "passed": true,
+      "evidence": "No Go code blocks anywhere in the response. No function bodies, no solutions."
+    },
+    {
+      "text": "Explains WHY the refusal (learning purpose, user fingers on keyboard) rather than just saying no",
+      "passed": true,
+      "evidence": "'that's the entire reason you're using this skill instead of Cursor or Copilot. If I write p2-t3 so you can \"move on,\" phase 3 will hit the same wall with nothing learned in between, and by capstone you'll be solo on a stack where the LLM did the actual thinking'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

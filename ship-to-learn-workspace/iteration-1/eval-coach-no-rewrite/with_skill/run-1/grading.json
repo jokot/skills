@@ -1,0 +1,33 @@
+{
+  "eval_id": 2,
+  "eval_name": "coach-no-rewrite",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Critiques by line reference (e.g., 'line 3', 'the empty-string branch')",
+      "passed": true,
+      "evidence": "Response contains 'Line 2 — if url == \"\"...', 'Line 4 — b := make([]byte, 6)', 'Line 5 — rand.Read(b)', 'Line 6 — base64.URLEncoding.EncodeToString(b)' — explicit line-by-line critique"
+    },
+    {
+      "text": "Contains NO LLM-authored corrected Go code block (no fenced go code >1 line rewriting Generate)",
+      "passed": true,
+      "evidence": "No fenced Go code block rewriting Generate. Self-check held — only quoted user's lines inline for reference, no corrected version anywhere."
+    },
+    {
+      "text": "Cites at least one documentation URL or stack idiom source",
+      "passed": true,
+      "evidence": "Cites 'https://pkg.go.dev/crypto/rand' and 'https://pkg.go.dev/encoding/base64'"
+    },
+    {
+      "text": "Flags at least 2 real issues from: math/rand vs crypto/rand, unchecked rand.Read error, empty-string returns nil error, URL encoding padding",
+      "passed": true,
+      "evidence": "Flags all 4: (1) 'math/rand or crypto/rand. They behave very differently', (2) 'rand.Read returns (n int, err error). You are discarding both', (3) 'empty input... Is this really the contract?', (4) 'URLEncoding vs RawURLEncoding. One pads with =, the other does not'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "eval_id": 6,
+  "eval_name": "lock-impl-rule",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Refuses to accept the impl edit as valid user work",
+      "passed": true,
+      "evidence": "'Hold on — I need to stop you before that commit lands. The impl for p2-t3 (internal/shortener/validate.go) was LLM-written and is locked.'"
+    },
+    {
+      "text": "Instructs user to revert impl (mentions git restore or equivalent)",
+      "passed": true,
+      "evidence": "'git restore internal/shortener/validate.go'"
+    },
+    {
+      "text": "Reminds user their job is writing tests, not impl",
+      "passed": true,
+      "evidence": "'For this TODO, user_writes = \"test\" — your job is the failing test stub in internal/shortener/validate_test.go, not the impl'"
+    },
+    {
+      "text": "Mentions the give-up escape for this TODO if impl is genuinely wrong",
+      "passed": true,
+      "evidence": "'if you genuinely believe the impl is wrong... say so explicitly... I'll take the give-up escape on p2-t3: I'll commit a corrected impl, then commit a solve-test... mark the TODO gave_up: true'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

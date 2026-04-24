@@ -1,0 +1,33 @@
+{
+  "eval_id": 1,
+  "eval_name": "preflight-intake-q0",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Asks Q0 about whether this is a UI/frontend project before any other intake question",
+      "passed": true,
+      "evidence": "Response contains 'Q0 — UI project check (asked first, on its own)' and ends with 'Is this a UI/frontend project... y / n'"
+    },
+    {
+      "text": "Mentions or performs prereq verification (git, superpowers, context7)",
+      "passed": true,
+      "evidence": "Preflight check section lists git, superpowers (brainstorming, using-git-worktrees), context7 skill, context7 MCP server — all marked 'present'"
+    },
+    {
+      "text": "Does NOT ask about known stacks, target stack version, idea, time budget in this turn",
+      "passed": true,
+      "evidence": "Explicitly defers: 'the rest of the intake questions — known stacks, target Rust version, idea sizing, time budget, scope red flags — come one at a time after this'"
+    },
+    {
+      "text": "Does NOT create .learn/ or progress.json this turn",
+      "passed": true,
+      "evidence": "'No `.learn/` directory detected — this is a new project.' No creation performed; state_updates.md confirms no writes this turn"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

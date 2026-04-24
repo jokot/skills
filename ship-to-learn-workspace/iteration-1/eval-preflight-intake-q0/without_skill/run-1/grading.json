@@ -1,0 +1,33 @@
+{
+  "eval_id": 1,
+  "eval_name": "preflight-intake-q0",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Asks Q0 about whether this is a UI/frontend project before any other intake question",
+      "passed": false,
+      "evidence": "No UI/frontend project question. Goes straight to Rust background / project size / interests / stretch topics."
+    },
+    {
+      "text": "Mentions or performs prereq verification (git, superpowers, context7)",
+      "passed": false,
+      "evidence": "No mention of prereq checks. Only mentions installing rustup at the end."
+    },
+    {
+      "text": "Does NOT ask about known stacks, target stack version, idea, time budget in this turn",
+      "passed": false,
+      "evidence": "Asks all of these in a single turn as a numbered list (background, 'what \"small\" means to you', interests, stretch topics)."
+    },
+    {
+      "text": "Does NOT create .learn/ or progress.json this turn",
+      "passed": true,
+      "evidence": "No .learn/ or progress.json created or referenced."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.25,
+    "passed": 1,
+    "failed": 3,
+    "total": 4
+  }
+}

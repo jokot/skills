@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "preflight-intake-q0",
+  "prompt": "Turn 1 of /ship-to-learn, user wants to learn Rust by building a small CLI tool.",
+  "assertions": [
+    {"text": "Asks Q0 about whether this is a UI/frontend project before any other intake question"},
+    {"text": "Mentions or performs prereq verification (git, superpowers, context7)"},
+    {"text": "Does NOT ask about known stacks, target stack version, idea, time budget in this turn"},
+    {"text": "Does NOT create .learn/ or progress.json this turn"}
+  ]
+}

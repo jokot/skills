@@ -1,0 +1,33 @@
+{
+  "eval_id": 5,
+  "eval_name": "capstone-stub-path-ask",
+  "configuration": "with_skill",
+  "expectations": [
+    {
+      "text": "Asks user where the failing test stub should live (file path question)",
+      "passed": true,
+      "evidence": "'Where should the one failing test stub live?' with three concrete Go-layout examples (internal/stats/stats_test.go, internal/shortener/stats_test.go, internal/handler/redirect_stats_test.go)"
+    },
+    {
+      "text": "Does NOT write a complete failing-test stub file this turn (no full test file content committed)",
+      "passed": true,
+      "evidence": "'Give me a path' before creating. No test file content written or committed."
+    },
+    {
+      "text": "References the reserved hit-counter feature from spec.md",
+      "passed": true,
+      "evidence": "'From spec.md → ## Reserved for capstone: Hit counter per short code. Increments on each redirect.' — directly quoted"
+    },
+    {
+      "text": "Mentions git status clean check or start_commit capture as part of solo entry",
+      "passed": true,
+      "evidence": "'Working tree check. I need your tree clean so capstone.start_commit is a meaningful ownership boundary. Run: git status --porcelain'"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 7,
+  "eval_name": "scope-change-refuse",
+  "prompt": "User requests adding OAuth mid-project.",
+  "assertions": [
+    {"text": "Refuses to add OAuth to the scope/plan"},
+    {"text": "Mentions scope lock / spec locked / invariant"},
+    {"text": "Instructs user to finish current project then start a new /ship-to-learn session for auth"},
+    {"text": "Does NOT silently edit plan.md or spec.md to add OAuth"}
+  ]
+}

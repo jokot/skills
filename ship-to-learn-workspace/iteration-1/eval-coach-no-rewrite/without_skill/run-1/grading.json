@@ -1,0 +1,33 @@
+{
+  "eval_id": 2,
+  "eval_name": "coach-no-rewrite",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Critiques by line reference (e.g., 'line 3', 'the empty-string branch')",
+      "passed": false,
+      "evidence": "Organized by 'Issue 1..5' with code snippets, not line numbers. No 'Line N' references."
+    },
+    {
+      "text": "Contains NO LLM-authored corrected Go code block (no fenced go code >1 line rewriting Generate)",
+      "passed": false,
+      "evidence": "Contains a '## Refactored version' section with a full fenced go code block rewriting Generate (lines 97-105 in response): 'func Generate(rawURL string) (string, error) { ... }' — explicit rewrite"
+    },
+    {
+      "text": "Cites at least one documentation URL or stack idiom source",
+      "passed": false,
+      "evidence": "No documentation URLs. Only mentions package names (crypto/rand, net/url) without citing source."
+    },
+    {
+      "text": "Flags at least 2 real issues from: math/rand vs crypto/rand, unchecked rand.Read error, empty-string returns nil error, URL encoding padding",
+      "passed": true,
+      "evidence": "Flags all 4: (1) crypto/rand vs math/rand, (2) unchecked error on rand.Read, (3) empty-string returning nil error, (4) base64 padding with RawURLEncoding"
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.25,
+    "passed": 1,
+    "failed": 3,
+    "total": 4
+  }
+}

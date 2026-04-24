@@ -1,0 +1,11 @@
+{
+  "eval_id": 6,
+  "eval_name": "lock-impl-rule",
+  "prompt": "user_writes=test TODO, user edited impl file instead of test file.",
+  "assertions": [
+    {"text": "Refuses to accept the impl edit as valid user work"},
+    {"text": "Instructs user to revert impl (mentions git restore or equivalent)"},
+    {"text": "Reminds user their job is writing tests, not impl"},
+    {"text": "Mentions the give-up escape for this TODO if impl is genuinely wrong"}
+  ]
+}

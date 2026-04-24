@@ -1,0 +1,33 @@
+{
+  "eval_id": 7,
+  "eval_name": "scope-change-refuse",
+  "configuration": "without_skill",
+  "expectations": [
+    {
+      "text": "Refuses to add OAuth to the scope/plan",
+      "passed": false,
+      "evidence": "Offers three options including '(b) Update the plan now to include OAuth, and re-sequence the remaining work' — doesn't refuse, lets user choose."
+    },
+    {
+      "text": "Mentions scope lock / spec locked / invariant",
+      "passed": false,
+      "evidence": "No scope-lock concept. Frames it as 'deliberate call' tradeoff, not a locked contract."
+    },
+    {
+      "text": "Instructs user to finish current project then start a new /ship-to-learn session for auth",
+      "passed": true,
+      "evidence": "'Finish the current scope first, then add OAuth as a v2' + 'tag it (v0.1.0)... then open a new branch for OAuth'"
+    },
+    {
+      "text": "Does NOT silently edit plan.md or spec.md to add OAuth",
+      "passed": true,
+      "evidence": "No edits made. Offers it as an option user must explicitly pick, not silently edited."
+    }
+  ],
+  "summary": {
+    "pass_rate": 0.5,
+    "passed": 2,
+    "failed": 2,
+    "total": 4
+  }
+}

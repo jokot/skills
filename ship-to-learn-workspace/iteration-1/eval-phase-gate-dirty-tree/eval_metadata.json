@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "phase-gate-dirty-tree",
+  "prompt": "User says 'done phase 1' but working tree has uncommitted practice files.",
+  "assertions": [
+    {"text": "Refuses to advance the phase"},
+    {"text": "Instructs user to commit first (mentions git add or git commit)"},
+    {"text": "Does NOT claim phase is done or run go test as primary action"},
+    {"text": "Keeps skill in coach mode (no claim of phase advance or build transition)"}
+  ]
+}
