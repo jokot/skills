@@ -1,6 +1,6 @@
 ---
 name: ship-to-learn
-description: Ship a real project in a new stack as a learning exercise, with the LLM as coach instead of autocomplete. For experienced developers learning a new language or framework. Use when the user says "ship-to-learn", "teach me X by building Y", "I want to learn a new stack by shipping", invokes /ship-to-learn, or asks to practice a new stack on a real project. Not suitable for tutorials, one-off snippets, refactors, or code review.
+description: Use when an experienced developer wants to learn a new language, framework, or stack by building a real small project rather than reading tutorials or having the LLM write the code. Common signals — they mention a stack they already know, a target stack they want to pick up, a small project idea (or asks for one), and often a time budget (for example "10h next weekend" or "6h this week"). Phrasings vary widely — "learn X by building Y", "practice Go on a side project", "team is migrating to Elixir, want to prep", "never touched Svelte, have an idea for a dashboard", "teach me X the way people actually learn — by shipping". Treat the LLM-as-coach framing as implicit — users rarely name it. Also triggers on "ship-to-learn" or /ship-to-learn. Do NOT use for tutorials, single-snippet questions, syntax lookups, debugging existing code, refactors, code review, stack comparisons (for example "should I learn Go or Rust"), or tooling and editor setup.
 ---
 
 # Learn By Shipping
