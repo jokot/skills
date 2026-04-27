@@ -1,0 +1,423 @@
+{
+  "metadata": {
+    "skill_name": "explain-codebase",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-04-27T09:33:30Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 873.0,
+        "tokens": 60373,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": true,
+          "evidence": "size=11142"
+        },
+        {
+          "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+          "passed": true,
+          "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": true,
+          "evidence": "all 6 present"
+        },
+        {
+          "text": "At least 5 file:line citations",
+          "passed": true,
+          "evidence": "found 34"
+        },
+        {
+          "text": "Visited >= 1 files",
+          "passed": true,
+          "evidence": "visited count = 21"
+        },
+        {
+          "text": "INDEX.md created/updated with row matching explainer",
+          "passed": true,
+          "evidence": "row present"
+        },
+        {
+          "text": "_session_state.json present with visited list",
+          "passed": true,
+          "evidence": "file size=4631, visited keys present=True"
+        },
+        {
+          "text": "Frontmatter scope value matches expected (commit:HEAD~10..HEAD)",
+          "passed": true,
+          "evidence": "scope = commit:HEAD~10..HEAD"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 421.2,
+        "tokens": 47168,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": true,
+          "evidence": "size=7513"
+        },
+        {
+          "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+          "passed": true,
+          "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": true,
+          "evidence": "all 6 present"
+        },
+        {
+          "text": "At least 3 file:line citations across the explainer body",
+          "passed": true,
+          "evidence": "found 32"
+        },
+        {
+          "text": "Visited >= 3 files",
+          "passed": true,
+          "evidence": "visited count = 5"
+        },
+        {
+          "text": "INDEX.md created/updated with row matching explainer",
+          "passed": true,
+          "evidence": "row present"
+        },
+        {
+          "text": "_session_state.json present with visited list",
+          "passed": true,
+          "evidence": "file size=4101, visited keys present=True"
+        },
+        {
+          "text": "Frontmatter scope value matches expected (feature/hook scope (not a file path))",
+          "passed": true,
+          "evidence": "scope = feature:hooks"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "failed": 0,
+        "total": 9,
+        "time_seconds": 481.4,
+        "tokens": 65992,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": true,
+          "evidence": "size=9783"
+        },
+        {
+          "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+          "passed": true,
+          "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": true,
+          "evidence": "all 6 present"
+        },
+        {
+          "text": "At least 5 file:line citations",
+          "passed": true,
+          "evidence": "found 44"
+        },
+        {
+          "text": "Visited >= 5 files",
+          "passed": true,
+          "evidence": "visited count = 9"
+        },
+        {
+          "text": "INDEX.md created/updated with row matching explainer",
+          "passed": true,
+          "evidence": "row present"
+        },
+        {
+          "text": "_session_state.json present with visited list",
+          "passed": true,
+          "evidence": "file size=7074, visited keys present=True"
+        },
+        {
+          "text": "Frontmatter scope value matches expected (file:logger.go)",
+          "passed": true,
+          "evidence": "scope = file:logger.go"
+        },
+        {
+          "text": "Identifies callers (exported.go or entry.go) in Files touched",
+          "passed": true,
+          "evidence": "found"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 8,
+        "total": 8,
+        "time_seconds": 390.1,
+        "tokens": 34109,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": false,
+          "evidence": "explainer=no, response.md size=5811"
+        },
+        {
+          "text": "Frontmatter has all required fields",
+          "passed": false,
+          "evidence": "missing: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": false,
+          "evidence": "missing: ['Overview', 'Entry point', 'Sequence', 'Files touched', 'Gotchas', 'Open questions']"
+        },
+        {
+          "text": "At least 5 file:line citations",
+          "passed": false,
+          "evidence": "found 0"
+        },
+        {
+          "text": "Visited >= 1 files",
+          "passed": false,
+          "evidence": "no session_state.json \u2014 baseline does not track visited list"
+        },
+        {
+          "text": "INDEX.md created/updated with row",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "_session_state.json present",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "Frontmatter scope matches expected (commit:HEAD~10..HEAD)",
+          "passed": false,
+          "evidence": "no frontmatter \u2014 baseline did not produce structured artifact"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 8,
+        "total": 8,
+        "time_seconds": 72.3,
+        "tokens": 30116,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": false,
+          "evidence": "explainer=no, response.md size=5324"
+        },
+        {
+          "text": "Frontmatter has all required fields",
+          "passed": false,
+          "evidence": "missing: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": false,
+          "evidence": "missing: ['Overview', 'Entry point', 'Sequence', 'Files touched', 'Gotchas', 'Open questions']"
+        },
+        {
+          "text": "At least 3 file:line citations",
+          "passed": false,
+          "evidence": "found 0"
+        },
+        {
+          "text": "Visited >= 3 files",
+          "passed": false,
+          "evidence": "no session_state.json \u2014 baseline does not track visited list"
+        },
+        {
+          "text": "INDEX.md created/updated with row",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "_session_state.json present",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "Frontmatter scope matches expected (feature/hook scope (not a file path))",
+          "passed": false,
+          "evidence": "no frontmatter \u2014 baseline did not produce structured artifact"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.1111,
+        "passed": 1,
+        "failed": 8,
+        "total": 9,
+        "time_seconds": 148.1,
+        "tokens": 36700,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "explainer.md present in outputs",
+          "passed": false,
+          "evidence": "explainer=no, response.md size=8320"
+        },
+        {
+          "text": "Frontmatter has all required fields",
+          "passed": false,
+          "evidence": "missing: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+        },
+        {
+          "text": "Contains all 6 locked sections in order",
+          "passed": false,
+          "evidence": "missing: ['Overview', 'Entry point', 'Sequence', 'Files touched', 'Gotchas', 'Open questions']"
+        },
+        {
+          "text": "At least 5 file:line citations",
+          "passed": false,
+          "evidence": "found 0"
+        },
+        {
+          "text": "Visited >= 5 files",
+          "passed": false,
+          "evidence": "no session_state.json \u2014 baseline does not track visited list"
+        },
+        {
+          "text": "INDEX.md created/updated with row",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "_session_state.json present",
+          "passed": false,
+          "evidence": "missing"
+        },
+        {
+          "text": "Frontmatter scope matches expected (file:logger.go)",
+          "passed": false,
+          "evidence": "no frontmatter \u2014 baseline did not produce structured artifact"
+        },
+        {
+          "text": "Identifies callers (exported.go or entry.go)",
+          "passed": true,
+          "evidence": "found in prose"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 591.8667,
+        "stddev": 245.3222,
+        "min": 421.2,
+        "max": 873.0
+      },
+      "tokens": {
+        "mean": 57844.3333,
+        "stddev": 9663.4031,
+        "min": 47168,
+        "max": 65992
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.037,
+        "stddev": 0.0641,
+        "min": 0.0,
+        "max": 0.1111
+      },
+      "time_seconds": {
+        "mean": 203.5,
+        "stddev": 165.9852,
+        "min": 72.3,
+        "max": 390.1
+      },
+      "tokens": {
+        "mean": 33641.6667,
+        "stddev": 3316.7852,
+        "min": 30116,
+        "max": 36700
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.96",
+      "time_seconds": "+388.4",
+      "tokens": "+24203"
+    }
+  },
+  "notes": []
+}

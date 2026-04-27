@@ -1,0 +1,15 @@
+{
+  "eval_id": 3,
+  "eval_name": "commit-range-scope",
+  "prompt": "/explain-codebase what changed in the last 10 commits --scope commit:HEAD~10..HEAD",
+  "assertions": [
+    {"text": "Produces explainer.md with locked frontmatter"},
+    {"text": "Frontmatter scope value reflects commit:HEAD~10..HEAD or equivalent commit-range expression"},
+    {"text": "Contains all 6 locked sections"},
+    {"text": "Sequence section walks chronologically through the commits or changed regions"},
+    {"text": "Files touched section lists files matching git diff --name-only HEAD~10..HEAD"},
+    {"text": "INDEX.md updated with row showing commit-range scope"},
+    {"text": "Distinguishes behavioral changes from doc/CI changes (cites at least one of each)"},
+    {"text": "_session_state.json present"}
+  ]
+}

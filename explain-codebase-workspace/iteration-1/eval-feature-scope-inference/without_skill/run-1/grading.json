@@ -1,0 +1,53 @@
+{
+  "eval_id": null,
+  "eval_name": "feature-scope-inference",
+  "configuration": "without_skill",
+  "summary": {
+    "pass_rate": 0.0,
+    "passed": 0,
+    "failed": 8,
+    "total": 8
+  },
+  "expectations": [
+    {
+      "text": "explainer.md present in outputs",
+      "passed": false,
+      "evidence": "explainer=no, response.md size=5324"
+    },
+    {
+      "text": "Frontmatter has all required fields",
+      "passed": false,
+      "evidence": "missing: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+    },
+    {
+      "text": "Contains all 6 locked sections in order",
+      "passed": false,
+      "evidence": "missing: ['Overview', 'Entry point', 'Sequence', 'Files touched', 'Gotchas', 'Open questions']"
+    },
+    {
+      "text": "At least 3 file:line citations",
+      "passed": false,
+      "evidence": "found 0"
+    },
+    {
+      "text": "Visited >= 3 files",
+      "passed": false,
+      "evidence": "no session_state.json \u2014 baseline does not track visited list"
+    },
+    {
+      "text": "INDEX.md created/updated with row",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "_session_state.json present",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "Frontmatter scope matches expected (feature/hook scope (not a file path))",
+      "passed": false,
+      "evidence": "no frontmatter \u2014 baseline did not produce structured artifact"
+    }
+  ]
+}

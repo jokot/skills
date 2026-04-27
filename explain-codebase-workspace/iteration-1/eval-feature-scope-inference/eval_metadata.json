@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "feature-scope-inference",
+  "prompt": "/explain-codebase how does logrus add hooks to log entries? (no --scope passed)",
+  "assertions": [
+    {"text": "Produces a markdown file at .onboard/<slug>-<ISO>.md (explainer.md present in outputs)"},
+    {"text": "Frontmatter contains question, scope, generated_at, visited_files, depth_reached, budget_state fields"},
+    {"text": "Contains all 6 locked sections in order: Overview, Entry point, Sequence, Files touched, Gotchas, Open questions"},
+    {"text": "Has at least 3 file:line citations across the explainer body"},
+    {"text": "Visited >= 3 files (not first-grep-stop)"},
+    {"text": "INDEX.md created or updated with a row matching the explainer file"},
+    {"text": "_session_state.json present with visited list and notes log"},
+    {"text": "Inferred scope is feature/auth-related (e.g. feature:hooks) — not a file path"}
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "eval_id": null,
+  "eval_name": "file-scope-explicit",
+  "configuration": "without_skill",
+  "summary": {
+    "pass_rate": 0.1111,
+    "passed": 1,
+    "failed": 8,
+    "total": 9
+  },
+  "expectations": [
+    {
+      "text": "explainer.md present in outputs",
+      "passed": false,
+      "evidence": "explainer=no, response.md size=8320"
+    },
+    {
+      "text": "Frontmatter has all required fields",
+      "passed": false,
+      "evidence": "missing: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+    },
+    {
+      "text": "Contains all 6 locked sections in order",
+      "passed": false,
+      "evidence": "missing: ['Overview', 'Entry point', 'Sequence', 'Files touched', 'Gotchas', 'Open questions']"
+    },
+    {
+      "text": "At least 5 file:line citations",
+      "passed": false,
+      "evidence": "found 0"
+    },
+    {
+      "text": "Visited >= 5 files",
+      "passed": false,
+      "evidence": "no session_state.json \u2014 baseline does not track visited list"
+    },
+    {
+      "text": "INDEX.md created/updated with row",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "_session_state.json present",
+      "passed": false,
+      "evidence": "missing"
+    },
+    {
+      "text": "Frontmatter scope matches expected (file:logger.go)",
+      "passed": false,
+      "evidence": "no frontmatter \u2014 baseline did not produce structured artifact"
+    },
+    {
+      "text": "Identifies callers (exported.go or entry.go)",
+      "passed": true,
+      "evidence": "found in prose"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "file-scope-explicit",
+  "prompt": "/explain-codebase explain logger.go and what calls it --scope file:logger.go",
+  "assertions": [
+    {"text": "Produces explainer.md with locked frontmatter"},
+    {"text": "Frontmatter scope value is file:logger.go (or equivalent file scope)"},
+    {"text": "Contains all 6 locked sections"},
+    {"text": "Visited >= 5 files (BFS expanded outward from logger.go, not single-file-stop)"},
+    {"text": "Identifies callers (e.g. exported.go, entry.go) in Files touched section"},
+    {"text": "INDEX.md updated with new row"},
+    {"text": "_session_state.json contains visited list with logger.go and at least 4 other files"},
+    {"text": "Has >= 5 file:line citations"}
+  ]
+}

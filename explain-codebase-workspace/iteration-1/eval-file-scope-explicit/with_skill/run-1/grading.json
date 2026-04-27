@@ -1,0 +1,58 @@
+{
+  "eval_id": null,
+  "eval_name": "file-scope-explicit",
+  "configuration": "with_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 9,
+    "failed": 0,
+    "total": 9
+  },
+  "expectations": [
+    {
+      "text": "explainer.md present in outputs",
+      "passed": true,
+      "evidence": "size=9783"
+    },
+    {
+      "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+      "passed": true,
+      "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+    },
+    {
+      "text": "Contains all 6 locked sections in order",
+      "passed": true,
+      "evidence": "all 6 present"
+    },
+    {
+      "text": "At least 5 file:line citations",
+      "passed": true,
+      "evidence": "found 44"
+    },
+    {
+      "text": "Visited >= 5 files",
+      "passed": true,
+      "evidence": "visited count = 9"
+    },
+    {
+      "text": "INDEX.md created/updated with row matching explainer",
+      "passed": true,
+      "evidence": "row present"
+    },
+    {
+      "text": "_session_state.json present with visited list",
+      "passed": true,
+      "evidence": "file size=7074, visited keys present=True"
+    },
+    {
+      "text": "Frontmatter scope value matches expected (file:logger.go)",
+      "passed": true,
+      "evidence": "scope = file:logger.go"
+    },
+    {
+      "text": "Identifies callers (exported.go or entry.go) in Files touched",
+      "passed": true,
+      "evidence": "found"
+    }
+  ]
+}

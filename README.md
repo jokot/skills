@@ -7,6 +7,7 @@ Agent Skills for experienced developers. Works with Claude Code, Cursor, Windsur
 | Name | One-liner |
 |---|---|
 | [`ship-to-learn`](#ship-to-learn) | Ship a real project in a new stack as a learning exercise, with the LLM as coach instead of autocomplete. |
+| [`explain-codebase`](#explain-codebase) | Walk an unfamiliar codebase BFS-style and produce a structured, file-cited markdown explainer at `.onboard/<slug>.md` — feature, file, or branch/commit-range scope. |
 
 ## Install
 
@@ -16,6 +17,7 @@ npx skills@latest add jokot/skills
 
 # single skill, project-level
 npx skills@latest add jokot/skills --skill ship-to-learn
+npx skills@latest add jokot/skills --skill explain-codebase
 
 # user-level (global)
 npx skills@latest add jokot/skills -g
@@ -220,6 +222,113 @@ A 5-year Node/TS dev wants to learn Go by shipping a URL shortener in ~6h. Intak
 | `context7` tools not callable | Re-run the MCP install for your agent. Restart the agent. |
 | `progress.json` out of sync with `plan.md` | Delete `progress.json` and re-invoke `/ship-to-learn`. Spec and plan survive. |
 | Capstone review flags "non-user commits" | Check `git config user.email` in the worktree matches the identity recorded in `.learn/progress.json`. |
+
+---
+
+# explain-codebase
+
+## What it is
+
+You join an unfamiliar codebase. You ask "how does the login flow work?" Default Claude greps once, summarises the first hit, calls it done — shallow, often wrong. This skill does the disciplined version: walks the call graph breadth-first across multiple files, grounds every claim in a `file:line` reference, and writes the answer to `.onboard/<slug>-<date>.md` using a fixed section template. A running `INDEX.md` builds a knowledge base of past explanations over time.
+
+## Who it's for
+
+Experienced developers dropped into someone else's code — new job, OSS project, client repo, taking over a feature. You want a written, share-able artifact, not a chat.
+
+Not for: writing new code, debugging failures, refactoring, or general programming questions where no specific codebase is involved.
+
+## Use
+
+```
+/explain-codebase how does the login page work
+/explain-codebase explain payments.go --scope file:internal/billing/payments.go
+/explain-codebase what changed --scope branch:main..feature/oauth
+/explain-codebase walk me through the billing package --scope feature:internal/billing
+```
+
+Scope can be omitted — the skill infers from the question (file paths, branch names, commit SHAs, or grep-driven feature inference).
+
+## Prerequisites
+
+| Requirement | Install |
+|---|---|
+| `git` (recommended) | your package manager — needed for branch/commit-range scope; file/feature scope still works without |
+| ability to read files in CWD | always |
+
+No skill dependencies, no MCP servers required. Self-contained.
+
+## How it works
+
+Preflight runs (git available? `.onboard/` exists?). The skill resolves scope (passed `--scope`, or inferred from the question). It seeds the BFS walk with the right files and explores breadth-first up to **depth 3 / 30 files / 200 KB** — whichever cap hits first. State is persisted in `.onboard/_session_state.json` after every read so the walk is resumable.
+
+Every read updates a notes log. The skill does not claim a fact unless it can cite the line. When the walk finishes (or a cap hits), it writes a single markdown file with **6 locked sections** to `.onboard/<slug>-<date>.md` and appends a row to `.onboard/INDEX.md`. The chat output is one line — the file is the deliverable.
+
+## Output template (locked)
+
+Every explainer file follows this structure exactly:
+
+```markdown
+---
+question: <verbatim user question>
+scope: <resolved>
+generated_at: <ISO>
+visited_files: <N>
+depth_reached: <int>
+budget_state: complete | file-cap | byte-cap | depth-cap | early-stop
+---
+
+# <Title>
+
+## Overview
+## Entry point
+## Sequence
+## Files touched
+## Gotchas
+## Open questions
+```
+
+Sections may say "Nothing notable." but never disappear. Same shape every time → cross-reference past explanations cheaply.
+
+## State directory
+
+```
+.onboard/
+  INDEX.md                          # append-only registry of past explainers
+  _session_state.json               # transient walk state (deleted/replaced per invocation)
+  how-does-login-work-2026-04-27.md # one file per explanation
+  what-changed-for-oauth-2026-04-27.md
+  ...
+```
+
+`.onboard/` lives in the worktree's root. Whether you commit it is your call — `.gitignore` is not modified by the skill.
+
+## Anti-patterns the skill refuses
+
+- First-grep stop. Read multiple files or admit the question is unanswered.
+- Asserting facts without `file:line` citation. Move uncited claims to "Open questions".
+- Touching code (no edits, refactors, or new code). Read-only skill.
+- Writing the explainer from memory instead of from the session-state notes log.
+- Modifying `.gitignore` to track or untrack `.onboard/` — that's the user's decision.
+
+## Trade-offs to know
+
+| Property | Reality |
+|---|---|
+| Speed | Disciplined BFS = ~3× slower than default Claude on the same question. |
+| Token cost | ~1.7× more tokens per question. |
+| Output quality | Every claim cited; same template every time; persisted artifact. |
+| Best fit | Multi-file flows, anything where "first grep hit" misses real complexity. |
+
+For a 30-second "what's a struct in Go" question, default Claude is faster. For "trace the redirect from request to DB", this skill is the right tool.
+
+## Troubleshooting
+
+| Symptom | Fix |
+|---|---|
+| "I can't infer a starting point" | Pass `--scope file:<path>` or `--scope feature:<dir>` explicitly. |
+| Walk hits cap before answering | Use a narrower scope, or run a follow-up `/explain-codebase` on the unread frontier flagged in "Open questions". |
+| `.onboard/` polluting your repo | Add `.onboard/` to `.gitignore` if you don't want the artifacts versioned. The skill won't do this for you. |
+| Branch/commit scope errors | Verify `git --version` works and the range is valid (`git diff --name-only <range>` should return files). |
 
 ---
 

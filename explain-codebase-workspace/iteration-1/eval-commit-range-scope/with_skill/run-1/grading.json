@@ -1,0 +1,53 @@
+{
+  "eval_id": null,
+  "eval_name": "commit-range-scope",
+  "configuration": "with_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 8,
+    "failed": 0,
+    "total": 8
+  },
+  "expectations": [
+    {
+      "text": "explainer.md present in outputs",
+      "passed": true,
+      "evidence": "size=11142"
+    },
+    {
+      "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+      "passed": true,
+      "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+    },
+    {
+      "text": "Contains all 6 locked sections in order",
+      "passed": true,
+      "evidence": "all 6 present"
+    },
+    {
+      "text": "At least 5 file:line citations",
+      "passed": true,
+      "evidence": "found 34"
+    },
+    {
+      "text": "Visited >= 1 files",
+      "passed": true,
+      "evidence": "visited count = 21"
+    },
+    {
+      "text": "INDEX.md created/updated with row matching explainer",
+      "passed": true,
+      "evidence": "row present"
+    },
+    {
+      "text": "_session_state.json present with visited list",
+      "passed": true,
+      "evidence": "file size=4631, visited keys present=True"
+    },
+    {
+      "text": "Frontmatter scope value matches expected (commit:HEAD~10..HEAD)",
+      "passed": true,
+      "evidence": "scope = commit:HEAD~10..HEAD"
+    }
+  ]
+}

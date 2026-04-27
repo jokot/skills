@@ -1,0 +1,41 @@
+{
+  "question": "how does logrus add hooks to log entries?",
+  "scope": "feature:hooks",
+  "started_at": "2026-04-27T09:09:58Z",
+  "depth_cap": 3,
+  "file_cap": 30,
+  "byte_cap": 204800,
+  "depth": 2,
+  "visited": [
+    "hooks.go",
+    "logger.go",
+    "entry.go",
+    "exported.go",
+    "hooks/test/test.go"
+  ],
+  "frontier": [
+    "hooks/syslog/syslog.go",
+    "hook_test.go",
+    "example_hook_test.go"
+  ],
+  "bytes_read": 48210,
+  "notes": [
+    {"file": "hooks.go", "lines": "8-11", "fact": "Hook interface = Levels() []Level + Fire(*Entry) error. Both required for any hook implementation."},
+    {"file": "hooks.go", "lines": "14", "fact": "LevelHooks is map[Level][]Hook — the registry data structure indexes hooks by the levels they care about."},
+    {"file": "hooks.go", "lines": "18-22", "fact": "LevelHooks.Add(hook): iterates hook.Levels() and appends hook to the slice for each level. Same hook can land in multiple level buckets."},
+    {"file": "hooks.go", "lines": "26-34", "fact": "LevelHooks.Fire(level, entry): walks hooks[level] and calls Fire on each; returns first error and stops. Note this is the LevelHooks.Fire on the registry — the actual log path uses entry.fireHooks (see entry.go) which logs errors to stderr instead of returning them."},
+    {"file": "logger.go", "lines": "23-26", "fact": "Logger struct field: Hooks LevelHooks — the per-logger hook registry, exported and directly mutatable (documented usage)."},
+    {"file": "logger.go", "lines": "91-99", "fact": "New() initializes Hooks via make(LevelHooks). Default loggers therefore start with an empty but non-nil registry."},
+    {"file": "logger.go", "lines": "376-381", "fact": "Logger.AddHook(hook): acquires logger.mu, then delegates to logger.Hooks.Add(hook). Mutex protects against concurrent AddHook + log calls."},
+    {"file": "logger.go", "lines": "383-396", "fact": "Logger.hooksForLevel(level): under the lock, copies the []Hook slice for that level and returns it so callers can iterate without holding the mutex (avoids deadlocks if a hook calls back into the logger)."},
+    {"file": "logger.go", "lines": "423-430", "fact": "Logger.ReplaceHooks: atomically swaps the entire LevelHooks map under the mutex, returning the previous one."},
+    {"file": "entry.go", "lines": "52-88", "fact": "Entry struct holds a *Logger pointer, plus Data/Time/Level/Caller/Message/Buffer/Context. The Entry is what hooks receive and may mutate before formatting/output."},
+    {"file": "entry.go", "lines": "279-322", "fact": "Entry.log(level, msg) is the central log path: dups the entry, sets Time/Level/Message, optionally fills Caller, then calls logger.hooksForLevel(level) and newEntry.fireHooks(...) BEFORE formatting and writing output."},
+    {"file": "entry.go", "lines": "299-303", "fact": "Hooks fire BEFORE the formatter runs. They receive a pointer to the Entry and may mutate fields (e.g. Data) — those mutations are visible to the formatter on the same call. The hook list is snapshotted before fireHooks, so AddHook calls during firing don't affect this event."},
+    {"file": "entry.go", "lines": "331-338", "fact": "Entry.fireHooks: iterates the snapshotted []Hook, calls hook.Fire(entry) on each. On any error, prints 'Failed to fire hook:' to stderr and returns early — remaining hooks are skipped. The error is NOT returned to the caller."},
+    {"file": "exported.go", "lines": "9-11", "fact": "Package-level std = New() — the implicit global Logger used by top-level helpers."},
+    {"file": "exported.go", "lines": "50-53", "fact": "Top-level logrus.AddHook(hook) is just std.AddHook(hook). Registers hooks on the global default logger."},
+    {"file": "hooks/test/test.go", "lines": "13-21", "fact": "Reference Hook implementation: stores Entries with a sync.RWMutex. Compile-time assertion `var _ logrus.Hook = (*Hook)(nil)` shows the canonical interface-conformance idiom."},
+    {"file": "hooks/test/test.go", "lines": "47-56", "fact": "Implements Fire (appends a copy of the entry under lock) and Levels (returns logrus.AllLevels — fires for every level)."}
+  ]
+}

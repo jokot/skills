@@ -1,0 +1,53 @@
+{
+  "eval_id": null,
+  "eval_name": "feature-scope-inference",
+  "configuration": "with_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 8,
+    "failed": 0,
+    "total": 8
+  },
+  "expectations": [
+    {
+      "text": "explainer.md present in outputs",
+      "passed": true,
+      "evidence": "size=7513"
+    },
+    {
+      "text": "Frontmatter has all required fields (question, scope, generated_at, visited_files, depth_reached, budget_state)",
+      "passed": true,
+      "evidence": "all present: ['question', 'scope', 'generated_at', 'visited_files', 'depth_reached', 'budget_state']"
+    },
+    {
+      "text": "Contains all 6 locked sections in order",
+      "passed": true,
+      "evidence": "all 6 present"
+    },
+    {
+      "text": "At least 3 file:line citations across the explainer body",
+      "passed": true,
+      "evidence": "found 32"
+    },
+    {
+      "text": "Visited >= 3 files",
+      "passed": true,
+      "evidence": "visited count = 5"
+    },
+    {
+      "text": "INDEX.md created/updated with row matching explainer",
+      "passed": true,
+      "evidence": "row present"
+    },
+    {
+      "text": "_session_state.json present with visited list",
+      "passed": true,
+      "evidence": "file size=4101, visited keys present=True"
+    },
+    {
+      "text": "Frontmatter scope value matches expected (feature/hook scope (not a file path))",
+      "passed": true,
+      "evidence": "scope = feature:hooks"
+    }
+  ]
+}
