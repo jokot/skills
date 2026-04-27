@@ -1,0 +1,32 @@
+{
+  "eval_name": "scope-change-refuse",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Refuses scope change",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Mentions scope lock",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Instructs new session",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Does NOT silently add to plan",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}

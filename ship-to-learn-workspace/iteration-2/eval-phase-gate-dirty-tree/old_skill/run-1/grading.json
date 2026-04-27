@@ -1,0 +1,32 @@
+{
+  "eval_name": "phase-gate-dirty-tree",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Refuses to advance the phase",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Instructs commit",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Does NOT run go test as primary action",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Stays in coach mode",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}

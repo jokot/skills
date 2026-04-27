@@ -125,7 +125,7 @@ Only `/ship-to-learn` is a real slash command (maps to this skill file). Everyth
 
 1. Read `progress.json`. If absent, treat as phase 0. If present but fails JSON parse, **halt immediately** and tell the user: "`.learn/progress.json` is malformed — I will not overwrite it blindly. Fix manually, or delete `.learn/` to start over. Run `/ship-to-learn` again once resolved." Do nothing else.
 2. Detect mode. Decide allowed actions accordingly per [MODE-MACHINE.md](./MODE-MACHINE.md).
-3. Apply self-check before any code block (see [PHASE-LOOP.md](./PHASE-LOOP.md) coach rule 1).
+3. Apply both self-checks in coach mode before responding (see [PHASE-LOOP.md](./PHASE-LOOP.md) coach rule 1): (a) no LLM-authored code block longer than one line, (b) **every concept hint cites at least one current-version `find-docs` / context7 URL inline** — if you cannot cite, run `find-docs` before answering. Coaching without a citation is your training data leaking through.
 4. Update `progress.json` on every state change. Log an event.
 5. Append to `notes/` after substantive coach exchanges.
 6. Do not touch `spec.md` or `plan.md` after phase 0 (capstone-feature append is the single exception — see [STATE-SCHEMA.md](./STATE-SCHEMA.md) Invariants).

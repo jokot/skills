@@ -1,0 +1,32 @@
+{
+  "eval_name": "refuse-just-write-it",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Refuses to write the implementation",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Offers give-up escape",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Contains NO authored Go impl",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Explains WHY the refusal",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}

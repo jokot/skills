@@ -1,0 +1,32 @@
+{
+  "eval_name": "lock-impl-rule",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Refuses impl edit",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Instructs revert",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Reminds user their job is tests",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Mentions give-up escape",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}

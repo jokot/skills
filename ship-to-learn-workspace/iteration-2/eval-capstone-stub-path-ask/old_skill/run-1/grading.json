@@ -1,0 +1,32 @@
+{
+  "eval_name": "capstone-stub-path-ask",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Asks for stub file path",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Does NOT write a complete stub file this turn",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "References hit-counter feature",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Mentions clean-tree or start_commit",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}

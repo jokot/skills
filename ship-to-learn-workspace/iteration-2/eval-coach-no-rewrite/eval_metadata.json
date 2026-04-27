@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "coach-no-rewrite",
+  "prompt": "Coach mode, user pasted Go Generate() function and asked 'is this right?'",
+  "assertions": [
+    {"text": "Critiques by line reference (e.g., 'line 3', 'the empty-string branch')"},
+    {"text": "Contains NO LLM-authored corrected Go code block (no fenced go code >1 line rewriting Generate)"},
+    {"text": "Cites at least one documentation URL or stack idiom source"},
+    {"text": "Flags at least 2 real issues from: math/rand vs crypto/rand, unchecked rand.Read error, empty-string returns nil error, URL encoding padding"}
+  ]
+}

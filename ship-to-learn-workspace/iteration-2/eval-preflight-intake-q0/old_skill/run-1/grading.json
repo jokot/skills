@@ -1,0 +1,32 @@
+{
+  "eval_name": "preflight-intake-q0",
+  "configuration": "old_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Asks Q0 about UI/frontend project before any other intake question",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Mentions or performs prereq verification",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Does NOT ask other intake questions in this turn",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Does NOT create .learn/ or progress.json this turn",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}
