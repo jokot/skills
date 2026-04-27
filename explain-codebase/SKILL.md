@@ -1,6 +1,20 @@
 ---
 name: explain-codebase
-description: Explain how a part of a codebase works by reading files in a disciplined breadth-first walk and producing a single structured markdown explainer at .onboard/<slug>.md. Use when the user asks "how does X work", "walk me through Y", "explain the auth flow", "what changed between branches A and B", "trace the login request", "give me a tour of <feature>", or any focused codebase question they want a written, file-cited answer to. Scope can be a feature, file, package, or branch/commit range. The skill explores the call graph (BFS up to depth 3, ~30 files, 200KB) instead of stopping at the first grep hit, locks the output to a fixed section template, and persists explanations under .onboard/ with a running INDEX.md so a team can build a knowledge base over time. Do NOT use for writing new code, debugging existing failures, refactoring, code review, or stack-level "should I learn Go or Rust" questions.
+description: >
+  Explain how a part of a codebase works by reading files in a
+  disciplined breadth-first walk and producing a single structured
+  markdown explainer at .onboard/<slug>.md. Use when the user asks
+  "how does X work", "walk me through Y", "explain the auth flow",
+  "what changed between branches A and B", "trace the login request",
+  "give me a tour of <feature>", or any focused codebase question
+  they want a written, file-cited answer to. Scope can be a feature,
+  file, package, or branch/commit range. The skill explores the call
+  graph (BFS up to depth 3, ~30 files, 200KB) instead of stopping at
+  the first grep hit, locks the output to a fixed section template,
+  and persists explanations under .onboard/ with a running INDEX.md
+  so a team can build a knowledge base over time. Do NOT use for
+  writing new code, debugging existing failures, refactoring, code
+  review, or stack-level "should I learn Go or Rust" questions.
 ---
 
 # Explain Codebase
