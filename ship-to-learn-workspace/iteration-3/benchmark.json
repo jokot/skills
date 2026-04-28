@@ -1,0 +1,139 @@
+{
+  "metadata": {
+    "skill_name": "ship-to-learn",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-04-28T03:04:34Z",
+    "evals_run": [
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 2,
+      "configuration": "new_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 183.1,
+        "tokens": 54690,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Critiques by line reference",
+          "passed": true,
+          "evidence": "matched"
+        },
+        {
+          "text": "Contains NO rewritten Generate function",
+          "passed": true,
+          "evidence": "matched"
+        },
+        {
+          "text": "Cites at least one doc URL",
+          "passed": true,
+          "evidence": "matched"
+        },
+        {
+          "text": "Flags >=2 real issues",
+          "passed": true,
+          "evidence": "matched"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 2,
+        "failed": 2,
+        "total": 4,
+        "time_seconds": 171.1,
+        "tokens": 53652,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Critiques by line reference",
+          "passed": true,
+          "evidence": "matched"
+        },
+        {
+          "text": "Contains NO rewritten Generate function",
+          "passed": false,
+          "evidence": "no match"
+        },
+        {
+          "text": "Cites at least one doc URL",
+          "passed": false,
+          "evidence": "no match"
+        },
+        {
+          "text": "Flags >=2 real issues",
+          "passed": true,
+          "evidence": "matched"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "new_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 183.1,
+        "stddev": 0.0,
+        "min": 183.1,
+        "max": 183.1
+      },
+      "tokens": {
+        "mean": 54690.0,
+        "stddev": 0.0,
+        "min": 54690,
+        "max": 54690
+      }
+    },
+    "old_skill": {
+      "pass_rate": {
+        "mean": 0.5,
+        "stddev": 0.0,
+        "min": 0.5,
+        "max": 0.5
+      },
+      "time_seconds": {
+        "mean": 171.1,
+        "stddev": 0.0,
+        "min": 171.1,
+        "max": 171.1
+      },
+      "tokens": {
+        "mean": 53652.0,
+        "stddev": 0.0,
+        "min": 53652,
+        "max": 53652
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.50",
+      "time_seconds": "+12.0",
+      "tokens": "+1038"
+    }
+  },
+  "notes": []
+}

@@ -1,0 +1,32 @@
+{
+  "eval_name": "coach-no-rewrite",
+  "configuration": "new_skill",
+  "summary": {
+    "pass_rate": 1.0,
+    "passed": 4,
+    "failed": 0,
+    "total": 4
+  },
+  "expectations": [
+    {
+      "text": "Critiques by line reference",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Contains NO rewritten Generate function",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Cites at least one doc URL",
+      "passed": true,
+      "evidence": "matched"
+    },
+    {
+      "text": "Flags >=2 real issues",
+      "passed": true,
+      "evidence": "matched"
+    }
+  ]
+}
