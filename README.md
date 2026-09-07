@@ -8,6 +8,7 @@ Agent Skills for experienced developers. Works with Claude Code, Cursor, Windsur
 |---|---|
 | [`ship-to-learn`](#ship-to-learn) | Ship a real project in a new stack as a learning exercise, with the LLM as coach instead of autocomplete. |
 | [`explain-codebase`](#explain-codebase) | Walk an unfamiliar codebase BFS-style and produce a structured, file-cited markdown explainer at `.onboard/<slug>.md` — feature, file, or branch/commit-range scope. |
+| [`learn-tech`](#learn-tech) | Learn a technical topic over multiple sessions in a tracked teaching workspace, with lessons calibrated to your background and, on request, a real build guided alongside them. |
 
 ## Install
 
@@ -18,6 +19,7 @@ npx skills@latest add jokot/skills
 # single skill — path syntax (shorter)
 npx skills@latest add jokot/skills/ship-to-learn
 npx skills@latest add jokot/skills/explain-codebase
+npx skills@latest add jokot/skills/learn-tech
 
 # single skill — flag syntax (equivalent)
 npx skills@latest add jokot/skills --skill ship-to-learn
@@ -82,6 +84,30 @@ Read the skill in [`explain-codebase/SKILL.md`](./explain-codebase/SKILL.md) —
 
 ---
 
+# learn-tech
+
+You want to learn a technical topic properly, not get one chat answer. This skill keeps a teaching workspace in the current directory — a mission, your stated background, cited sources, a glossary, and numbered lessons — and calibrates each lesson to what you already know. Every lesson front-loads the terms it uses that you have not met yet, and skips the ones your background already covers. On request, it also guides you through building a real thing alongside the lessons: real learning stages, a locked spec, and a build-guide section per lesson that gives you a skeleton and a citation, not a finished solution.
+
+For anyone who wants to learn a topic in depth across sessions, with or without a project attached to it. Not for a single quick explanation, a syntax lookup, or debugging existing code.
+
+## Use
+
+```
+/learn-tech
+```
+
+Or plain English: "teach me WebAssembly", "I want to learn Kubernetes properly", "teach me Rust and help me build a CLI while I learn it".
+
+## Trade-off
+
+Slower than one chat answer — it writes a workspace of files before it writes a word of lesson content, and asks for your background up front. Output is a reusable teaching workspace: lessons you can reopen, a glossary in your own words, and, on request, a real thing you built alongside them. Worth it when you plan to come back to the topic; overkill for a one-off question.
+
+## Skill internals
+
+Read the skill in [`learn-tech/SKILL.md`](./learn-tech/SKILL.md) — the entry point — and follow links to sibling docs covering the workspace layout and file formats, the lesson format, and the build track (brainstorming, teaching spec, per-stage plans).
+
+---
+
 ## Contributing
 
 Each skill is a directory with a `SKILL.md`:
@@ -100,7 +126,8 @@ Test artifacts (eval definitions, benchmark workspaces) live in `<skill-name>-wo
 - [`obra/superpowers`](https://github.com/obra/superpowers) — brainstorming, writing-plans, using-git-worktrees. MIT.
 - [`upstash/context7`](https://github.com/upstash/context7) — current-version docs. MIT.
 - [`vercel-labs/skills`](https://github.com/vercel-labs/skills) — the Agent Skills installer. MIT.
-- [`mattpocock/skills`](https://github.com/mattpocock/skills) — repo-layout reference for split skills + path-syntax install. MIT.
+- [`mattpocock/skills`](https://github.com/mattpocock/skills) — repo-layout reference for split skills + path-syntax install, and the `teach` skill's workspace design (mission, lessons, glossary, learning records) that `learn-tech` builds on. MIT.
+- [`ste-writing`](./ste-writing) — this repo's own ASD-STE100 skill, required by `learn-tech` for every generated doc. MIT.
 
 ## License
 
